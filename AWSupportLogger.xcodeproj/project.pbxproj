@@ -99,9 +99,9 @@
 			children = (
 				DD84CE3326C5658400E9776F /* MiscFunctions.swift */,
 				DD84CE3526C565CE00E9776F /* ImagePicker.swift */,
+				DD8FE30026B2347100916A80 /* AWSupportLoggerApp.swift */,
 				DD84CE3026B61F9400E9776F /* View */,
 				DD84CE2B26B6138800E9776F /* Model_ViewModel */,
-				DD8FE30026B2347100916A80 /* AWSupportLoggerApp.swift */,
 				DD8FE30426B2347300916A80 /* Assets.xcassets */,
 				DD8FE30F26B3409600916A80 /* GoogleService-Info.plist */,
 				DD8FE30926B2347300916A80 /* Info.plist */,

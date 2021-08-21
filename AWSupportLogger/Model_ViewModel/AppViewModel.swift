@@ -18,9 +18,9 @@ class AppViewModel: ObservableObject {
 //    @Published var session: User?
 //    @Published var isAnon: Bool = false
 //    var handle: AuthStateDidChangeListenerHandle?
-    @Published var signedIn = false
-    
     let authRef = Auth.auth()
+    
+    @Published var signedIn = false
     
     var isSignedIn: Bool {
         return authRef.currentUser != nil

@@ -16,6 +16,8 @@ struct ContentView: View {
             if viewModel.signedIn {
                 Text("You are signed in")
             } else {
+                
+                //.onAppear method is used for keyboard management (See Misc Functions...)
                 SignInView()
                     .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
             }

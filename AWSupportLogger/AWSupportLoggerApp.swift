@@ -13,10 +13,10 @@ struct AWSupportLoggerApp: App {
     
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
+    @StateObject var viewModel = AppViewModel()
     
     var body: some Scene {
         WindowGroup {
-            let viewModel = AppViewModel()
             ContentView()
                 .environmentObject(viewModel)
         }

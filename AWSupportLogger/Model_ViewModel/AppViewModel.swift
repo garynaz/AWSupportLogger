@@ -8,35 +8,29 @@
 import SwiftUI
 import FirebaseAuth
 
-//struct User {
-//    var uid: String
-//    var email: String
-//}
+struct User {
+    var uid: String
+    var email: String
+}
 
 
 class AppViewModel: ObservableObject {
-//    @Published var session: User?
-//    @Published var isAnon: Bool = false
-//    var handle: AuthStateDidChangeListenerHandle?
+    @Published var session: User?
+    @Published var signedIn: Bool = false
+    var handle: AuthStateDidChangeListenerHandle?
     let authRef = Auth.auth()
     
-    @Published var signedIn = false
-    
-    var isSignedIn: Bool {
-        return authRef.currentUser != nil
+    func listen() {
+        handle = authRef.addStateDidChangeListener({ auth, user in
+            if let user = user {
+                self.signedIn = true
+                self.session = User(uid: user.uid, email: user.email!)
+            } else {
+                self.signedIn = false
+                self.session = nil
+            }
+        })
     }
-    
-//    func listen() {
-//        handle = authRef.addStateDidChangeListener({ auth, user in
-//            if let user = user {
-//                self.isAnon = false
-//                self.session = User(uid: user.uid, email: user.email!)
-//            } else {
-//                self.isAnon = true
-//                self.session = nil
-//            }
-//        })
-//    }
     
     func signIn(email: String, password: String){
         authRef.signIn(withEmail: email, password: password) { [weak self] result, error in
@@ -64,21 +58,20 @@ class AppViewModel: ObservableObject {
         }
     }
     
-//    func signOut() -> Bool {
-//        do {
-//            try authRef.signOut()
-//            self.session = nil
-//            self.isAnon = true
-//            return true
-//        } catch {
-//            return false
-//        }
-//    }
+    func signOut(){
+        do {
+            try authRef.signOut()
+            self.signedIn = false
+            self.session = nil
+        } catch {
+            print(error)
+        }
+    }
     
-//    func unbind() {
-//        if let handle = handle {
-//            authRef.removeStateDidChangeListener(handle)
-//        }
-//    }
+    func unbind() {
+        if let handle = handle {
+            authRef.removeStateDidChangeListener(handle)
+        }
+    }
     
 }

@@ -12,7 +12,7 @@ struct SignUpView: View {
     
     @State private var name: String = ""
     @State private var company: String = ""
-    @State private var username: String = ""
+    @State private var email: String = ""
     @State private var password: String = ""
     @State private var photo: Image?
     @State private var admin: Bool = false
@@ -26,7 +26,7 @@ struct SignUpView: View {
     
     
     var disableSignUpButton : Bool {
-        return self.username.isEmpty || self.password.isEmpty || self.name.isEmpty || self.company.isEmpty
+        return self.email.isEmpty || self.password.isEmpty || self.name.isEmpty || self.company.isEmpty
     }
     
     
@@ -59,15 +59,15 @@ struct SignUpView: View {
                             }
                         })
                     
-                    TextField("Username", text: $username)
+                    TextField("Email", text: $email)
                         .padding(.leading)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                     Divider()
                         .padding(.bottom)
-                        .onChange(of: self.username, perform: { value in
+                        .onChange(of: self.email, perform: { value in
                             if value.count > 30 {
-                                self.username = String(value.prefix(30))
+                                self.email = String(value.prefix(30))
                             }
                         })
                     
@@ -123,9 +123,9 @@ struct SignUpView: View {
                 
                 
                 Button(action: {
-                    viewModel.signUp(email: username, password: password)
+                    viewModel.signUp(email: email, password: password, company: company, name: name, admin: admin, photo: "URL")
                 }, label: { Text("Create Account")
-//                    .disabled(disableSignUpButton)
+                    .disabled(disableSignUpButton)
                     .frame(width: 300, height: 50)
                     .background(Color.green)
                     .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))

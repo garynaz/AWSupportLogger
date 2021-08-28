@@ -29,7 +29,7 @@ struct SignInView: View {
                 .frame(width: 180, height: 100)
                 .padding(.bottom, 50)
             
-            TextField("Username", text: $username)
+            TextField("Email", text: $username)
                 .padding(.leading)
                 .disableAutocorrection(true)
                 .autocapitalization(.none)

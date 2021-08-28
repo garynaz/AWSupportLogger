@@ -6,28 +6,23 @@
 //
 
 import SwiftUI
+import Firebase
 import FirebaseAuth
 
-struct User {
-    var uid: String
-    var email: String
-}
 
 
 class AppViewModel: ObservableObject {
-    @Published var session: User?
     @Published var signedIn: Bool = false
     var handle: AuthStateDidChangeListenerHandle?
     let authRef = Auth.auth()
     
+    
     func listen() {
         handle = authRef.addStateDidChangeListener({ auth, user in
-            if let user = user {
+            if user != nil {
                 self.signedIn = true
-                self.session = User(uid: user.uid, email: user.email!)
             } else {
                 self.signedIn = false
-                self.session = nil
             }
         })
     }
@@ -45,15 +40,24 @@ class AppViewModel: ObservableObject {
         }
     }
     
-    func signUp(email: String, password: String){
+    func signUp(email: String, password: String, company: String, name: String, admin: Bool, photo: String){
         authRef.createUser(withEmail: email, password: password) { [weak self] result, error in
             guard result != nil, error == nil else {
                 return
             }
             
+            let db = Firestore.firestore()
+            
             //Success
-            DispatchQueue.main.async {
-                self?.signedIn = true
+            DispatchQueue.main.async { [self] in
+                db.collection("info").addDocument(data: ["company" : "\(company)", "name" : "\(name)", "admin" : admin, "photo" : "\(photo)"]) { error in
+                    if error != nil {
+                        print(error!)
+                        self?.signedIn = false
+                    } else {
+                        self?.signedIn = true
+                    }
+                }
             }
         }
     }
@@ -62,7 +66,6 @@ class AppViewModel: ObservableObject {
         do {
             try authRef.signOut()
             self.signedIn = false
-            self.session = nil
         } catch {
             print(error)
         }

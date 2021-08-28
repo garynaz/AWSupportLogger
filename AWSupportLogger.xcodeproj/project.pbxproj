@@ -10,6 +10,10 @@
 		406E2F91BD67CED2B96C09E6 /* Pods_AWSupportLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53A341AB8E3023F12DBF3591 /* Pods_AWSupportLogger.framework */; };
 		DD128E7E26CC18080064B47B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD128E7D26CC18080064B47B /* ContentView.swift */; };
 		DD128E8026CC2AAB0064B47B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD128E7F26CC2AAB0064B47B /* SignUpView.swift */; };
+		DD75528426D7153E00735158 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528326D7153E00735158 /* User.swift */; };
+		DD75528626D7154700735158 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528526D7154700735158 /* Ticket.swift */; };
+		DD75528926D8320A00735158 /* InfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528826D8320A00735158 /* InfoViewModel.swift */; };
+		DD75528B26D8321200735158 /* TicketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528A26D8321200735158 /* TicketViewModel.swift */; };
 		DD84CE2F26B613E800E9776F /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD84CE2E26B613E800E9776F /* AppViewModel.swift */; };
 		DD84CE3226B61FA800E9776F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD84CE3126B61FA800E9776F /* SignInView.swift */; };
 		DD84CE3426C5658400E9776F /* MiscFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD84CE3326C5658400E9776F /* MiscFunctions.swift */; };
@@ -26,6 +30,10 @@
 		ACBEEC30EEE807FD19EF87D5 /* Pods-AWSupportLogger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AWSupportLogger.debug.xcconfig"; path = "Target Support Files/Pods-AWSupportLogger/Pods-AWSupportLogger.debug.xcconfig"; sourceTree = "<group>"; };
 		DD128E7D26CC18080064B47B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DD128E7F26CC2AAB0064B47B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		DD75528326D7153E00735158 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		DD75528526D7154700735158 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticket.swift; sourceTree = "<group>"; };
+		DD75528826D8320A00735158 /* InfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoViewModel.swift; sourceTree = "<group>"; };
+		DD75528A26D8321200735158 /* TicketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketViewModel.swift; sourceTree = "<group>"; };
 		DD84CE2E26B613E800E9776F /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		DD84CE3126B61FA800E9776F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		DD84CE3326C5658400E9776F /* MiscFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscFunctions.swift; sourceTree = "<group>"; };
@@ -58,10 +66,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DD75528726D8027600735158 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DD75528326D7153E00735158 /* User.swift */,
+				DD75528526D7154700735158 /* Ticket.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		DD84CE2B26B6138800E9776F /* Model_ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				DD84CE2E26B613E800E9776F /* AppViewModel.swift */,
+				DD75528826D8320A00735158 /* InfoViewModel.swift */,
+				DD75528A26D8321200735158 /* TicketViewModel.swift */,
 			);
 			path = Model_ViewModel;
 			sourceTree = "<group>";
@@ -101,6 +120,7 @@
 				DD84CE3526C565CE00E9776F /* ImagePicker.swift */,
 				DD8FE30026B2347100916A80 /* AWSupportLoggerApp.swift */,
 				DD84CE3026B61F9400E9776F /* View */,
+				DD75528726D8027600735158 /* Model */,
 				DD84CE2B26B6138800E9776F /* Model_ViewModel */,
 				DD8FE30426B2347300916A80 /* Assets.xcassets */,
 				DD8FE30F26B3409600916A80 /* GoogleService-Info.plist */,
@@ -241,13 +261,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD75528926D8320A00735158 /* InfoViewModel.swift in Sources */,
 				DD84CE3226B61FA800E9776F /* SignInView.swift in Sources */,
+				DD75528426D7153E00735158 /* User.swift in Sources */,
 				DD8FE30126B2347100916A80 /* AWSupportLoggerApp.swift in Sources */,
 				DD128E7E26CC18080064B47B /* ContentView.swift in Sources */,
+				DD75528626D7154700735158 /* Ticket.swift in Sources */,
 				DD128E8026CC2AAB0064B47B /* SignUpView.swift in Sources */,
 				DD84CE3626C565CE00E9776F /* ImagePicker.swift in Sources */,
 				DD84CE2F26B613E800E9776F /* AppViewModel.swift in Sources */,
 				DD84CE3426C5658400E9776F /* MiscFunctions.swift in Sources */,
+				DD75528B26D8321200735158 /* TicketViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

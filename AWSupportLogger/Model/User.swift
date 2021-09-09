@@ -9,22 +9,23 @@ import SwiftUI
 import Firebase
 
 class User: Identifiable {
-    var uid: UUID = UUID()
+    var uid: UUID
     var company: String
     var name: String
     var admin: Bool
     var photo: String
-    var tickets: [Ticket]?
+//    var tickets: [Ticket]?
     
     
-    init(company: String, name: String, admin: Bool, photo: String, tickets:[Ticket]?) {
+    init(uid: UUID, company: String, name: String, admin: Bool, photo: String) {
+        self.uid = uid
         self.company = company
         self.name = name
         self.admin = admin
         self.photo = photo
-        if let tickets = tickets {
-            self.tickets = tickets
-        }
+//        if let tickets = tickets {
+//            self.tickets = tickets
+//        }
     }
     
 }

@@ -6,9 +6,15 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct SignUpView: View {
     @EnvironmentObject var viewModel: AppViewModel
+    
+    //Test Image Data
+    let imageStorageRef = Storage.storage().reference()
+    @State private var selectedImageURL: URL?
+
     
     @State private var name: String = ""
     @State private var company: String = ""
@@ -76,7 +82,7 @@ struct SignUpView: View {
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                     Divider()
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 30)
                         .onChange(of: self.password, perform: { value in
                             if value.count > 30 {
                                 self.password = String(value.prefix(30))
@@ -120,10 +126,22 @@ struct SignUpView: View {
                     self.showingImagePicker = true
                 }
                 .padding(.bottom, 50)
-                
-                
+                                
                 Button(action: {
-                    viewModel.signUp(email: email, password: password, company: company, name: name, admin: admin, photo: "URL")
+                    //Uploads image to storage...
+                    Storage.storage().reference().child("images/\(String(describing: selectedImageURL?.lastPathComponent))").putFile(from: self.selectedImageURL!, metadata: nil) { metadata, error in
+                        
+                          // Download URL after upload and create new User Object.
+                          imageStorageRef.child("images/\(String(describing: selectedImageURL?.lastPathComponent))").downloadURL { (url, error) in
+                            guard let downloadURL = url else {
+                              print("Unable to Download URL")
+                              return
+                            }
+                            viewModel.signUp(email: email, password: password, company: company, name: name, admin: admin, photo: downloadURL.absoluteString)
+                          }
+                    }
+                    
+                    
                 }, label: { Text("Create Account")
                     .disabled(disableSignUpButton)
                     .frame(width: 300, height: 50)
@@ -133,7 +151,7 @@ struct SignUpView: View {
                 
             }
             .sheet(isPresented: $showingImagePicker, onDismiss: loadImage){
-                ImagePicker(image: self.$inputImage)
+                ImagePicker(image: self.$inputImage, selectedImageURL: self.$selectedImageURL)
             }
         }
         

@@ -9,6 +9,10 @@ import SwiftUI
 
 struct ImagePicker: UIViewControllerRepresentable {
     
+    @Environment(\.presentationMode) var presentationMode
+    @Binding var image: UIImage?
+    @Binding var selectedImageURL: URL?
+    
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate{
         let parent: ImagePicker
         
@@ -19,13 +23,12 @@ struct ImagePicker: UIViewControllerRepresentable {
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             if let uiImage = info[.originalImage] as? UIImage{
                 parent.image = uiImage
+                parent.selectedImageURL = info[UIImagePickerController.InfoKey.imageURL] as? URL //Image URL
             }
             parent.presentationMode.wrappedValue.dismiss()
         }
     }
     
-    @Environment(\.presentationMode) var presentationMode
-    @Binding var image: UIImage?
     
     func makeCoordinator() -> Coordinator {
         Coordinator(self)

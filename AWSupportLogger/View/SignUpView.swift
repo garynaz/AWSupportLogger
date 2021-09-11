@@ -129,18 +129,10 @@ struct SignUpView: View {
                                 
                 Button(action: {
                     //Uploads image to storage...
-                    Storage.storage().reference().child("images/\(String(describing: selectedImageURL?.lastPathComponent))").putFile(from: self.selectedImageURL!, metadata: nil) { metadata, error in
-                        
-                          // Download URL after upload and create new User Object.
-                          imageStorageRef.child("images/\(String(describing: selectedImageURL?.lastPathComponent))").downloadURL { (url, error) in
-                            guard let downloadURL = url else {
-                              print("Unable to Download URL")
-                              return
-                            }
-                            viewModel.signUp(email: email, password: password, company: company, name: name, admin: admin, photo: downloadURL.absoluteString)
-                          }
-                    }
+                    let randomID = UUID.init().uuidString
+                    Storage.storage().reference().child("images/\(randomID).jpg").putFile(from: self.selectedImageURL!)
                     
+                    viewModel.signUp(email: email, password: password, company: company, name: name, admin: admin, photoRef: "images/\(randomID).jpg")
                     
                 }, label: { Text("Create Account")
                     .disabled(disableSignUpButton)

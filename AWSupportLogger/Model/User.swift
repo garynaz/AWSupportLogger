@@ -13,16 +13,18 @@ class User: Identifiable {
     var company: String
     var name: String
     var admin: Bool
-    var photo: String
+    var photoRef: String
+    var photoImage: UIImage?
 //    var tickets: [Ticket]?
     
     
-    init(uid: UUID, company: String, name: String, admin: Bool, photo: String) {
+    init(uid: UUID, company: String, name: String, admin: Bool, photoRef: String, photoImage: UIImage?) {
         self.uid = uid
         self.company = company
         self.name = name
         self.admin = admin
-        self.photo = photo
+        self.photoRef = photoRef
+        self.photoImage = photoImage
 //        if let tickets = tickets {
 //            self.tickets = tickets
 //        }

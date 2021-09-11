@@ -23,54 +23,69 @@ class AppViewModel: ObservableObject {
     var authHandle : AuthStateDidChangeListenerHandle?
     var rootInfoCollection : CollectionReference!
     var userIdRef = ""
-
+    
+    var photoImage: UIImage?
+    var downloadImageTask: StorageReference?
     
     
-    func fetchUserData(){
-        db.collection("Users").document("\(userIdRef)").getDocument { document, error in
+    
+    func fetchUserData(completion: @escaping () -> Void){
+        db.collection("Users").document("\(userIdRef)").getDocument { [weak self] document, error in
             // Check for error
             if error == nil {
                 // Check that this document exists
                 if document != nil && document!.exists {
                     
-                    self.userInfo = document.map { (documentSnapshot) -> User in
+                    self?.userInfo = document.map { (documentSnapshot) -> User in
                         let data = documentSnapshot.data()
                         
                         let uid = data?["uid"] as? UUID ?? UUID()
                         let company = data?["company"] as? String ?? ""
                         let name = data?["name"] as? String ?? ""
                         let admin = data?["admin"] as? Bool ?? false
-                        let photo = data?["photo"] as? String ?? ""
+                        let photoRef = data?["photo"] as? String ?? ""
                         
+                        self?.downloadImageTask = Storage.storage().reference(withPath: photoRef)
                         
-                        return User(uid: uid, company: company, name: name, admin: admin, photo: photo)
+                        return User(uid: uid, company: company, name: name, admin: admin, photoRef: photoRef, photoImage: nil)
                     }
-                    
-                    withAnimation {
-                        self.signedIn = true
-                    }
-                    
+                    completion()
                 }
             }
         }
         
     }
     
-    func listen(){
-        handle = authRef.addStateDidChangeListener({ auth, user in
-            if let user = auth.currentUser {
-                self.userIdRef = user.uid
-                self.rootInfoCollection = Firestore.firestore().collection("/Users/")
-                
-                DispatchQueue.main.async {
-                    self.fetchUserData()
-                }
-                                
+    
+    func downloadImageData(){
+        downloadImageTask?.getData(maxSize: 6 * 1024 * 1024, completion: { [weak self] data, error in
+            if let error = error {
+                print("Got an error fetching data: \(error.localizedDescription)")
+                return
             } else {
-                self.signedIn = false
+                self?.photoImage = UIImage(data: data!)
+                withAnimation {
+                    self?.signedIn = true
+                }
             }
         })
-        
+    }
+    
+    func listen(){
+        handle = authRef.addStateDidChangeListener({ [weak self] auth, user in
+            if let user = auth.currentUser {
+                self?.userIdRef = user.uid
+                self?.rootInfoCollection = Firestore.firestore().collection("/Users/")
+                print("Listening")
+                
+                self?.fetchUserData{
+                    self?.downloadImageData()
+                }
+                
+            } else {
+                self?.signedIn = false
+            }
+        })
     }
     
     func signIn(email: String, password: String){
@@ -89,7 +104,7 @@ class AppViewModel: ObservableObject {
         }
     }
     
-    func signUp(email: String, password: String, company: String, name: String, admin: Bool, photo: String){
+    func signUp(email: String, password: String, company: String, name: String, admin: Bool, photoRef: String){
         authRef.createUser(withEmail: email, password: password) { result, error in
             
             guard result != nil, error == nil else {
@@ -99,7 +114,7 @@ class AppViewModel: ObservableObject {
             let db = Firestore.firestore()
             
             //Success
-            db.collection("Users").document("\(result!.user.uid)").setData(["company" : "\(company)", "name" : "\(name)", "admin" : admin, "photo" : "\(photo)", "uid":result!.user.uid]) { error in
+            db.collection("Users").document("\(result!.user.uid)").setData(["company" : "\(company)", "name" : "\(name)", "admin" : admin, "photo" : "\(photoRef)", "uid":result!.user.uid]) { error in
                 if error != nil {
                     print(error!)
                 }

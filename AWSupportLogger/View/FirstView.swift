@@ -49,11 +49,11 @@ struct FirstView: View {
         },trailing: HStack{
             Image(systemName: "bell")
                 .font(.system(size: 30))
-//            selectedImageArray.first!
-//                .resizable()
-//                .scaledToFit()
-//                .clipShape(Circle())
-//                .frame(width: 50, height: 50)
+            Image(uiImage: appViewModel.photoImage!)
+                .resizable()
+                .scaledToFit()
+                .clipShape(Circle())
+                .frame(width: 50, height: 50)
             Text(appViewModel.userInfo?.name ?? "Tester")
                 .font(.system(size: 20))
         })

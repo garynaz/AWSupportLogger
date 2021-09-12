@@ -38,6 +38,9 @@ struct FirstView: View {
             }
             Spacer()
         }
+        .onAppear(){
+            appViewModel.unbind()
+        }
         .navigationBarBackButtonHidden(true)
         .navigationTitle(appViewModel.userInfo?.company ?? "Test")
         .navigationBarItems(leading: Button(action: {

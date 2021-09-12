@@ -46,7 +46,6 @@ class AppViewModel: ObservableObject {
                         let photoRef = data?["photo"] as? String ?? ""
                         
                         self?.downloadImageTask = Storage.storage().reference(withPath: photoRef)
-                        
                         return User(uid: uid, company: company, name: name, admin: admin, photoRef: photoRef, photoImage: nil)
                     }
                     completion()
@@ -55,6 +54,8 @@ class AppViewModel: ObservableObject {
         }
         
     }
+    
+    
     
     
     func downloadImageData(){
@@ -76,7 +77,6 @@ class AppViewModel: ObservableObject {
             if let user = auth.currentUser {
                 self?.userIdRef = user.uid
                 self?.rootInfoCollection = Firestore.firestore().collection("/Users/")
-                print("Listening")
                 
                 self?.fetchUserData{
                     self?.downloadImageData()
@@ -106,15 +106,14 @@ class AppViewModel: ObservableObject {
     
     func signUp(email: String, password: String, company: String, name: String, admin: Bool, photoRef: String){
         authRef.createUser(withEmail: email, password: password) { result, error in
-            
+            print("Signing up the User")
+
             guard result != nil, error == nil else {
                 return
             }
-            
-            let db = Firestore.firestore()
-            
+                        
             //Success
-            db.collection("Users").document("\(result!.user.uid)").setData(["company" : "\(company)", "name" : "\(name)", "admin" : admin, "photo" : "\(photoRef)", "uid":result!.user.uid]) { error in
+            self.db.collection("Users").document("\(result!.user.uid)").setData(["company" : "\(company)", "name" : "\(name)", "admin" : admin, "photo" : "\(photoRef)", "uid":result!.user.uid]) { error in
                 if error != nil {
                     print(error!)
                 }

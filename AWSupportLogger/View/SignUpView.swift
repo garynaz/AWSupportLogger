@@ -130,9 +130,10 @@ struct SignUpView: View {
                 Button(action: {
                     //Uploads image to storage...
                     let randomID = UUID.init().uuidString
-                    Storage.storage().reference().child("images/\(randomID).jpg").putFile(from: self.selectedImageURL!)
                     
-                    viewModel.signUp(email: email, password: password, company: company, name: name, admin: admin, photoRef: "images/\(randomID).jpg")
+                    Storage.storage().reference().child("images/\(randomID).jpg").putFile(from: self.selectedImageURL!, metadata: nil) { metadata, error in
+                        viewModel.signUp(email: email, password: password, company: company, name: name, admin: admin, photoRef: "images/\(randomID).jpg")
+                    }
                     
                 }, label: { Text("Create Account")
                     .disabled(disableSignUpButton)

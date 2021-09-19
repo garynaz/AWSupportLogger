@@ -15,7 +15,6 @@ class User: Identifiable {
     var admin: Bool
     var photoRef: String
     var photoImage: UIImage?
-//    var tickets: [Ticket]?
     
     
     init(uid: UUID, company: String, name: String, admin: Bool, photoRef: String, photoImage: UIImage?) {
@@ -25,9 +24,6 @@ class User: Identifiable {
         self.admin = admin
         self.photoRef = photoRef
         self.photoImage = photoImage
-//        if let tickets = tickets {
-//            self.tickets = tickets
-//        }
     }
     
 }

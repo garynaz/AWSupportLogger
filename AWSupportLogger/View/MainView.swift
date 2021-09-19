@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 
 
-struct FirstView: View {
+struct MainView: View {
     @EnvironmentObject private var appViewModel: AppViewModel
 
     var body: some View {
@@ -18,19 +18,19 @@ struct FirstView: View {
             Spacer()
             VStack(spacing: 50){
                 
-                NavigationLink(destination: Text("Test")){
+                NavigationLink(destination: SupportView()){
                     awButton(content: "Request Support", backColor: Color(#colorLiteral(red: 0, green: 0.723585546, blue: 0.9907287955, alpha: 1)))
                         .shadow(color: Color.primary.opacity(0.5), radius: 20, x: 0, y: 20)
                         .rotation3DEffect(Angle(degrees:10), axis: (x: 10.0, y: 0, z: 0))
                 }
 
-                NavigationLink(destination: Text("Test")){
+                NavigationLink(destination: QuoteView()){
                     awButton(content: "Request Quote", backColor: Color(#colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)))
                         .shadow(color: Color.primary.opacity(0.5), radius: 20, x: 0, y: 20)
                         .rotation3DEffect(Angle(degrees:10), axis: (x: 10.0, y: 0, z: 0))
                 }
 
-                NavigationLink(destination: Text("Test")){
+                NavigationLink(destination: TicketView()){
                     awButton(content: "Ticket Status", backColor: Color(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)))
                         .shadow(color: Color.primary.opacity(0.5), radius: 20, x: 0, y: 20)
                         .rotation3DEffect(Angle(degrees:10), axis: (x: 10.0, y: 0, z: 0))
@@ -39,7 +39,9 @@ struct FirstView: View {
             Spacer()
         }
         .onAppear(){
-            appViewModel.unbind()
+            DispatchQueue.main.async {
+                appViewModel.fetchTicketsData()
+            }
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle(appViewModel.userInfo?.company ?? "Test")
@@ -66,7 +68,7 @@ struct FirstView: View {
 
 struct FirstView_Previews: PreviewProvider {
     static var previews: some View {
-        FirstView()
+        MainView()
     }
 }
 

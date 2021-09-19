@@ -15,7 +15,7 @@ struct ContentView: View {
         NavigationView {
             VStack{
                 if viewModel.signedIn {
-                    FirstView()
+                    MainView()
                         .transition(.slide)
                 } else {
                     //.onAppear method is used for keyboard management (See Misc Functions...)
@@ -28,5 +28,6 @@ struct ContentView: View {
                 viewModel.listen()
             }
         }
+        .navigationViewStyle(StackNavigationViewStyle()) //Makes the NavLinkButton deselect on TicketView after returning back from DetailView.
     }
 }

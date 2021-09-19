@@ -15,6 +15,7 @@ class AppViewModel: ObservableObject {
     private var db = Firestore.firestore()
     
     @Published var userInfo: User?
+    @Published var ticketsArray: [Ticket] = [Ticket]()
     @Published var signedIn: Bool = false
     
     var handle: AuthStateDidChangeListenerHandle?
@@ -22,6 +23,7 @@ class AppViewModel: ObservableObject {
     
     var authHandle : AuthStateDidChangeListenerHandle?
     var rootInfoCollection : CollectionReference!
+    var rootTicketCollection: CollectionReference?
     var userIdRef = ""
     
     var photoImage: UIImage?
@@ -38,13 +40,13 @@ class AppViewModel: ObservableObject {
                     
                     self?.userInfo = document.map { (documentSnapshot) -> User in
                         let data = documentSnapshot.data()
-                        
+
                         let uid = data?["uid"] as? UUID ?? UUID()
                         let company = data?["company"] as? String ?? ""
                         let name = data?["name"] as? String ?? ""
                         let admin = data?["admin"] as? Bool ?? false
                         let photoRef = data?["photo"] as? String ?? ""
-                        
+
                         self?.downloadImageTask = Storage.storage().reference(withPath: photoRef)
                         return User(uid: uid, company: company, name: name, admin: admin, photoRef: photoRef, photoImage: nil)
                     }
@@ -55,6 +57,33 @@ class AppViewModel: ObservableObject {
         
     }
     
+    func fetchTicketsData(){
+        self.rootTicketCollection?.order(by: "date", descending: false).addSnapshotListener({ querySnapshot, error in
+            
+            guard let snapshot = querySnapshot else {return}
+            
+            snapshot.documentChanges.forEach { diff in
+                if (diff.type == .added) {
+                    self.ticketsArray.removeAll()
+                    
+                    for ticket in querySnapshot!.documents{
+                        let ticketData = ticket.data()
+                        let date = ticketData["date"] as! String
+                        let status = ticketData["status"] as! String
+                        let type = ticketData["type"] as! String
+                        let inquiry = ticketData["inquiry"] as! String
+                        let priority = ticketData["priority"] as! String
+                        
+                        let newTicket = Ticket(date: date, inquiry: inquiry, priority: priority, status: status, type: type, key: ticket.reference)
+                        self.ticketsArray.append(newTicket)
+                    }
+                    
+                }
+            }
+            
+            
+        })
+    }
     
     
     
@@ -65,8 +94,10 @@ class AppViewModel: ObservableObject {
                 return
             } else {
                 self?.photoImage = UIImage(data: data!)
-                withAnimation {
-                    self?.signedIn = true
+                DispatchQueue.main.async {
+                    withAnimation {
+                        self?.signedIn = true
+                    }
                 }
             }
         })
@@ -77,11 +108,10 @@ class AppViewModel: ObservableObject {
             if let user = auth.currentUser {
                 self?.userIdRef = user.uid
                 self?.rootInfoCollection = Firestore.firestore().collection("/Users/")
-                
+                self?.rootTicketCollection = Firestore.firestore().collection("/Users/\(self!.userIdRef)/Tickets")
                 self?.fetchUserData{
                     self?.downloadImageData()
                 }
-                
             } else {
                 self?.signedIn = false
             }
@@ -113,7 +143,13 @@ class AppViewModel: ObservableObject {
             }
                         
             //Success
-            self.db.collection("Users").document("\(result!.user.uid)").setData(["company" : "\(company)", "name" : "\(name)", "admin" : admin, "photo" : "\(photoRef)", "uid":result!.user.uid]) { error in
+            self.db.collection("Users").document("\(result!.user.uid)").setData([
+                "company" : "\(company)",
+                "name" : "\(name)",
+                "admin" : admin,
+                "photo" : "\(photoRef)",
+                "uid":result!.user.uid
+            ]) { error in
                 if error != nil {
                     print(error!)
                 }
@@ -127,6 +163,26 @@ class AppViewModel: ObservableObject {
         if let handle = handle {
             authRef.removeStateDidChangeListener(handle)
         }
+    }
+    
+    
+    func addTicket(inquiry: String, priority: String, status: String, type: String){
+        let today = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm E, d MMM y"
+                
+        self.rootTicketCollection?.addDocument(data: [
+            "date" : "\(formatter.string(from: today))",
+            "inquiry" : inquiry,
+            "priority" : "\(priority)",
+            "status": "\(status)",
+            "type": "\(type)"
+        ], completion: { error in
+            if error != nil {
+                print(error!.localizedDescription)
+            }
+            
+        })
     }
     
 }

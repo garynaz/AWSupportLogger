@@ -44,7 +44,7 @@ struct MainView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle(appViewModel.userInfo?.company ?? "Test")
+        .navigationTitle(appViewModel.userInfo!.company)
         .navigationBarItems(leading: Button(action: {
             appViewModel.signOut()
         }) {
@@ -59,7 +59,7 @@ struct MainView: View {
                 .scaledToFit()
                 .clipShape(Circle())
                 .frame(width: 50, height: 50)
-            Text(appViewModel.userInfo?.name ?? "Tester")
+            Text(appViewModel.userInfo!.name)
                 .font(.system(size: 20))
         })
     }

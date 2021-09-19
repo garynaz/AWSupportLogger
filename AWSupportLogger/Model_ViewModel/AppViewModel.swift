@@ -17,8 +17,11 @@ class AppViewModel: ObservableObject {
     @Published var userInfo: User?
     @Published var ticketsArray: [Ticket] = [Ticket]()
     @Published var signedIn: Bool = false
+    var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
     
     var handle: AuthStateDidChangeListenerHandle?
+    var ticketListener: ListenerRegistration?
+    
     let authRef = Auth.auth()
     
     var authHandle : AuthStateDidChangeListenerHandle?
@@ -58,7 +61,7 @@ class AppViewModel: ObservableObject {
     }
     
     func fetchTicketsData(){
-        self.rootTicketCollection?.order(by: "date", descending: false).addSnapshotListener({ querySnapshot, error in
+        ticketListener = self.rootTicketCollection?.order(by: "date", descending: false).addSnapshotListener({ querySnapshot, error in
             
             guard let snapshot = querySnapshot else {return}
             
@@ -80,12 +83,8 @@ class AppViewModel: ObservableObject {
                     
                 }
             }
-            
-            
         })
     }
-    
-    
     
     func downloadImageData(){
         downloadImageTask?.getData(maxSize: 6 * 1024 * 1024, completion: { [weak self] data, error in
@@ -96,7 +95,15 @@ class AppViewModel: ObservableObject {
                 self?.photoImage = UIImage(data: data!)
                 DispatchQueue.main.async {
                     withAnimation {
+                        
+                        //Fixes issue with fetching object and re-triggering fetch request after SignOut.
+                        guard self?.signedOutTapped != true else {
+                            self?.signedOutTapped = false
+                            return
+                        }
+                        
                         self?.signedIn = true
+                        print("User is Signed In")
                     }
                 }
             }
@@ -104,6 +111,7 @@ class AppViewModel: ObservableObject {
     }
     
     func listen(){
+        print("Listener is triggered")
         handle = authRef.addStateDidChangeListener({ [weak self] auth, user in
             if let user = auth.currentUser {
                 self?.userIdRef = user.uid
@@ -127,6 +135,9 @@ class AppViewModel: ObservableObject {
     }
     
     func signOut(){
+        self.unbind()
+        self.signedOutTapped = true //Fixes issue with fetching object and re-triggering fetch request after SignOut.
+
         do {
             try authRef.signOut()
         } catch {
@@ -160,8 +171,15 @@ class AppViewModel: ObservableObject {
     
     
     func unbind() {
+        
+        if let ticketListener = ticketListener {
+            ticketListener.remove()
+            print("Ticket Listener is removed")
+        }
+        
         if let handle = handle {
             authRef.removeStateDidChangeListener(handle)
+            print("Auth listener is removed")
         }
     }
     
@@ -181,7 +199,6 @@ class AppViewModel: ObservableObject {
             if error != nil {
                 print(error!.localizedDescription)
             }
-            
         })
     }
     

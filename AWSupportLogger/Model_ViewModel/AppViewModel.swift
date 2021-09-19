@@ -103,7 +103,6 @@ class AppViewModel: ObservableObject {
                         }
                         
                         self?.signedIn = true
-                        print("User is Signed In")
                     }
                 }
             }
@@ -147,7 +146,6 @@ class AppViewModel: ObservableObject {
     
     func signUp(email: String, password: String, company: String, name: String, admin: Bool, photoRef: String){
         authRef.createUser(withEmail: email, password: password) { result, error in
-            print("Signing up the User")
 
             guard result != nil, error == nil else {
                 return
@@ -174,12 +172,10 @@ class AppViewModel: ObservableObject {
         
         if let ticketListener = ticketListener {
             ticketListener.remove()
-            print("Ticket Listener is removed")
         }
         
         if let handle = handle {
             authRef.removeStateDidChangeListener(handle)
-            print("Auth listener is removed")
         }
     }
     

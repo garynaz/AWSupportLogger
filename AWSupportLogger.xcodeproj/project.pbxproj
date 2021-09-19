@@ -26,6 +26,7 @@
 		DDC88E1C26EEC8A00005B827 /* TicketView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC88E1B26EEC8A00005B827 /* TicketView.swift */; };
 		DDC88E1E26EEC8C90005B827 /* QuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC88E1D26EEC8C90005B827 /* QuoteView.swift */; };
 		DDC88E2026F6BCD30005B827 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC88E1F26F6BCD30005B827 /* DetailView.swift */; };
+		DDC88E2226F7BE1D0005B827 /* AdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC88E2126F7BE1D0005B827 /* AdminView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		DDC88E1B26EEC8A00005B827 /* TicketView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketView.swift; sourceTree = "<group>"; };
 		DDC88E1D26EEC8C90005B827 /* QuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteView.swift; sourceTree = "<group>"; };
 		DDC88E1F26F6BCD30005B827 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		DDC88E2126F7BE1D0005B827 /* AdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AdminView.swift; path = "/Users/owner1/Desktop/Practice Projects/AWSupportLogger/AWSupportLogger/View/AdminView.swift"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				DD128E7D26CC18080064B47B /* ContentView.swift */,
 				DD84CE3126B61FA800E9776F /* SignInView.swift */,
 				DD128E7F26CC2AAB0064B47B /* SignUpView.swift */,
+				DDC88E2126F7BE1D0005B827 /* AdminView.swift */,
 				DD75528C26DA9CB000735158 /* MainView.swift */,
 				DDC88E1926EEC83A0005B827 /* SupportView.swift */,
 				DDC88E1D26EEC8C90005B827 /* QuoteView.swift */,
@@ -287,6 +290,7 @@
 				DDC88E1E26EEC8C90005B827 /* QuoteView.swift in Sources */,
 				DD84CE3426C5658400E9776F /* MiscFunctions.swift in Sources */,
 				DDC88E2026F6BCD30005B827 /* DetailView.swift in Sources */,
+				DDC88E2226F7BE1D0005B827 /* AdminView.swift in Sources */,
 				DD75528B26D8321200735158 /* TicketViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

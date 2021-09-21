@@ -57,8 +57,23 @@ class AppViewModel: ObservableObject {
                 }
             }
         }
-        
     }
+    
+    
+    func fetchAllTicketData(){
+        self.rootInfoCollection.getDocuments { querySnapshot, error in
+            if let error = error {
+                print("Got an error fetching data: \(error.localizedDescription)")
+                return
+            } else {
+                for user in querySnapshot!.documents{
+                    let userData = user.data()
+                    print(userData)
+                }
+            }
+        }
+    }
+    
     
     func fetchTicketsData(){
         ticketListener = self.rootTicketCollection?.order(by: "date", descending: false).addSnapshotListener({ querySnapshot, error in

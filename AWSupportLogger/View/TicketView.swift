@@ -14,7 +14,7 @@ struct TicketView: View {
     
     var body: some View {
         List{
-            ForEach(appViewModel.ticketsArray) { ticket in
+            ForEach(appViewModel.userTicketsArray) { ticket in
                 NavigationLink(
                     destination: DetailView(selectedTicket: ticket)){
                     ticketRow(ticket: ticket)
@@ -30,11 +30,11 @@ struct TicketView: View {
 
     func deleteTicket(at offsets: IndexSet){
         for offset in offsets {
-            let selectedTicket = appViewModel.ticketsArray[offset].key!
+            let selectedTicket = appViewModel.userTicketsArray[offset].key!
             
             DispatchQueue.main.async {
                 appViewModel.rootTicketCollection!.document(selectedTicket.documentID).delete()
-                appViewModel.ticketsArray.remove(at: offset)
+                appViewModel.userTicketsArray.remove(at: offset)
             }
         }
     }

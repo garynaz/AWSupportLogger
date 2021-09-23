@@ -15,15 +15,17 @@ class Ticket: Identifiable {
     var priority: String
     var status: String
     var type: String
+    var userId: String
     var key: DocumentReference!
     
     
-    init(date: String, inquiry: String, priority: String, status: String, type: String, key: DocumentReference) {
+    init(date: String, inquiry: String, priority: String, status: String, type: String, userId: String, key: DocumentReference) {
         self.date = date
         self.inquiry = inquiry
         self.priority = priority
         self.status = status
         self.type = type
+        self.userId = userId
         self.key = key
     }
 }

@@ -15,8 +15,13 @@ struct ContentView: View {
         NavigationView {
             VStack{
                 if viewModel.signedIn {
-                    MainView()
-                        .transition(.slide)
+                    if viewModel.userInfo?.admin == true {
+                        AdminView()
+                            .transition(.slide)
+                    } else {
+                        MainView()
+                            .transition(.slide)
+                    }
                 } else {
                     //.onAppear method is used for keyboard management (See Misc Functions...)
                     SignInView()

@@ -12,7 +12,6 @@
 		DD128E8026CC2AAB0064B47B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD128E7F26CC2AAB0064B47B /* SignUpView.swift */; };
 		DD75528426D7153E00735158 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528326D7153E00735158 /* User.swift */; };
 		DD75528626D7154700735158 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528526D7154700735158 /* Ticket.swift */; };
-		DD75528B26D8321200735158 /* TicketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528A26D8321200735158 /* TicketViewModel.swift */; };
 		DD75528D26DA9CB000735158 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528C26DA9CB000735158 /* MainView.swift */; };
 		DD84CE2F26B613E800E9776F /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD84CE2E26B613E800E9776F /* AppViewModel.swift */; };
 		DD84CE3226B61FA800E9776F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD84CE3126B61FA800E9776F /* SignInView.swift */; };
@@ -37,7 +36,6 @@
 		DD128E7F26CC2AAB0064B47B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		DD75528326D7153E00735158 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DD75528526D7154700735158 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticket.swift; sourceTree = "<group>"; };
-		DD75528A26D8321200735158 /* TicketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketViewModel.swift; sourceTree = "<group>"; };
 		DD75528C26DA9CB000735158 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		DD84CE2E26B613E800E9776F /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		DD84CE3126B61FA800E9776F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -89,7 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				DD84CE2E26B613E800E9776F /* AppViewModel.swift */,
-				DD75528A26D8321200735158 /* TicketViewModel.swift */,
 			);
 			path = Model_ViewModel;
 			sourceTree = "<group>";
@@ -291,7 +288,6 @@
 				DD84CE3426C5658400E9776F /* MiscFunctions.swift in Sources */,
 				DDC88E2026F6BCD30005B827 /* DetailView.swift in Sources */,
 				DDC88E2226F7BE1D0005B827 /* AdminView.swift in Sources */,
-				DD75528B26D8321200735158 /* TicketViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,7 +15,9 @@ class AppViewModel: ObservableObject {
     private var db = Firestore.firestore()
     
     @Published var userInfo: User?
-    @Published var ticketsArray: [Ticket] = [Ticket]()
+    @Published var userTicketsArray: [Ticket] = [Ticket]()
+    @Published var allTicketsArray: [Ticket] = [Ticket]()
+
     @Published var signedIn: Bool = false
     var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
     
@@ -44,11 +46,11 @@ class AppViewModel: ObservableObject {
                     self?.userInfo = document.map { (documentSnapshot) -> User in
                         let data = documentSnapshot.data()
 
-                        let uid = data?["uid"] as? UUID ?? UUID()
                         let company = data?["company"] as? String ?? ""
                         let name = data?["name"] as? String ?? ""
                         let admin = data?["admin"] as? Bool ?? false
                         let photoRef = data?["photo"] as? String ?? ""
+                        let uid = data?["uid"] as? String ?? ""
 
                         self?.downloadImageTask = Storage.storage().reference(withPath: photoRef)
                         return User(uid: uid, company: company, name: name, admin: admin, photoRef: photoRef, photoImage: nil)
@@ -61,28 +63,13 @@ class AppViewModel: ObservableObject {
     
     
     func fetchAllTicketData(){
-        self.rootInfoCollection.getDocuments { querySnapshot, error in
-            if let error = error {
-                print("Got an error fetching data: \(error.localizedDescription)")
-                return
-            } else {
-                for user in querySnapshot!.documents{
-                    let userData = user.data()
-                    print(userData)
-                }
-            }
-        }
-    }
-    
-    
-    func fetchTicketsData(){
         ticketListener = self.rootTicketCollection?.order(by: "date", descending: false).addSnapshotListener({ querySnapshot, error in
             
             guard let snapshot = querySnapshot else {return}
             
             snapshot.documentChanges.forEach { diff in
                 if (diff.type == .added) {
-                    self.ticketsArray.removeAll()
+                    self.allTicketsArray.removeAll()
                     
                     for ticket in querySnapshot!.documents{
                         let ticketData = ticket.data()
@@ -91,9 +78,38 @@ class AppViewModel: ObservableObject {
                         let type = ticketData["type"] as! String
                         let inquiry = ticketData["inquiry"] as! String
                         let priority = ticketData["priority"] as! String
+                        let userId = ticketData["userId"] as! String
                         
-                        let newTicket = Ticket(date: date, inquiry: inquiry, priority: priority, status: status, type: type, key: ticket.reference)
-                        self.ticketsArray.append(newTicket)
+                        let newTicket = Ticket(date: date, inquiry: inquiry, priority: priority, status: status, type: type, userId: userId, key: ticket.reference)
+                        self.allTicketsArray.append(newTicket)
+                    }
+                    
+                }
+            }
+        })
+    }
+    
+    
+    func fetchTicketsData(){
+        ticketListener = self.rootTicketCollection?.whereField("userId", isEqualTo: self.userInfo!.uid).order(by: "date", descending: false).addSnapshotListener({ querySnapshot, error in
+            
+            guard let snapshot = querySnapshot else {return}
+            
+            snapshot.documentChanges.forEach { diff in
+                if (diff.type == .added) {
+                    self.userTicketsArray.removeAll()
+                    
+                    for ticket in querySnapshot!.documents{
+                        let ticketData = ticket.data()
+                        let date = ticketData["date"] as! String
+                        let status = ticketData["status"] as! String
+                        let type = ticketData["type"] as! String
+                        let inquiry = ticketData["inquiry"] as! String
+                        let priority = ticketData["priority"] as! String
+                        let userId = ticketData["userId"] as! String
+                        
+                        let newTicket = Ticket(date: date, inquiry: inquiry, priority: priority, status: status, type: type, userId: userId, key: ticket.reference)
+                        self.userTicketsArray.append(newTicket)
                     }
                     
                 }
@@ -130,9 +146,15 @@ class AppViewModel: ObservableObject {
             if let user = auth.currentUser {
                 self?.userIdRef = user.uid
                 self?.rootInfoCollection = Firestore.firestore().collection("/Users/")
-                self?.rootTicketCollection = Firestore.firestore().collection("/Users/\(self!.userIdRef)/Tickets")
+                self?.rootTicketCollection = Firestore.firestore().collection("/Ticket/")
                 self?.fetchUserData{
-                    self?.downloadImageData()
+                    if self?.userInfo?.admin == false{
+                        self?.downloadImageData()
+                    } else {
+                        self?.fetchAllTicketData()
+                        self?.downloadImageData()
+                    }
+                    
                 }
             } else {
                 self?.signedIn = false
@@ -172,7 +194,7 @@ class AppViewModel: ObservableObject {
                 "name" : "\(name)",
                 "admin" : admin,
                 "photo" : "\(photoRef)",
-                "uid":result!.user.uid
+                "uid": "\(result!.user.uid)"
             ]) { error in
                 if error != nil {
                     print(error!)
@@ -205,7 +227,8 @@ class AppViewModel: ObservableObject {
             "inquiry" : inquiry,
             "priority" : "\(priority)",
             "status": "\(status)",
-            "type": "\(type)"
+            "type": "\(type)",
+            "userId": "\(self.userInfo!.uid)"
         ], completion: { error in
             if error != nil {
                 print(error!.localizedDescription)

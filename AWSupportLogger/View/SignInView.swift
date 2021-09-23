@@ -37,7 +37,7 @@ struct SignInView: View {
                 .padding(.bottom)
                 .onChange(of: self.username, perform: { value in
                     if value.count > 10 {
-                        self.username = String(value.prefix(20)) //Max 10 Characters for Username.
+                        self.username = String(value.prefix(20)) //Max 20 Characters for Username.
                     }
                 })
             

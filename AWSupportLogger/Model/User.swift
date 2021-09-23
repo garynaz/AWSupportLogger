@@ -9,7 +9,7 @@ import SwiftUI
 import Firebase
 
 class User: Identifiable {
-    var uid: UUID
+    var uid: String
     var company: String
     var name: String
     var admin: Bool
@@ -17,7 +17,7 @@ class User: Identifiable {
     var photoImage: UIImage?
     
     
-    init(uid: UUID, company: String, name: String, admin: Bool, photoRef: String, photoImage: UIImage?) {
+    init(uid: String, company: String, name: String, admin: Bool, photoRef: String, photoImage: UIImage?) {
         self.uid = uid
         self.company = company
         self.name = name

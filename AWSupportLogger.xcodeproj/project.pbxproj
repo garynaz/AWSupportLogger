@@ -13,6 +13,7 @@
 		DD75528426D7153E00735158 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528326D7153E00735158 /* User.swift */; };
 		DD75528626D7154700735158 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528526D7154700735158 /* Ticket.swift */; };
 		DD75528D26DA9CB000735158 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528C26DA9CB000735158 /* MainView.swift */; };
+		DD7DEC02270255A1009B1436 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7DEC01270255A1009B1436 /* Message.swift */; };
 		DD84CE2F26B613E800E9776F /* AppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD84CE2E26B613E800E9776F /* AppViewModel.swift */; };
 		DD84CE3226B61FA800E9776F /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD84CE3126B61FA800E9776F /* SignInView.swift */; };
 		DD84CE3426C5658400E9776F /* MiscFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD84CE3326C5658400E9776F /* MiscFunctions.swift */; };
@@ -37,6 +38,7 @@
 		DD75528326D7153E00735158 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DD75528526D7154700735158 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticket.swift; sourceTree = "<group>"; };
 		DD75528C26DA9CB000735158 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		DD7DEC01270255A1009B1436 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		DD84CE2E26B613E800E9776F /* AppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppViewModel.swift; sourceTree = "<group>"; };
 		DD84CE3126B61FA800E9776F /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		DD84CE3326C5658400E9776F /* MiscFunctions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscFunctions.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 			children = (
 				DD75528326D7153E00735158 /* User.swift */,
 				DD75528526D7154700735158 /* Ticket.swift */,
+				DD7DEC01270255A1009B1436 /* Message.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				DD84CE2F26B613E800E9776F /* AppViewModel.swift in Sources */,
 				DDC88E1E26EEC8C90005B827 /* QuoteView.swift in Sources */,
 				DD84CE3426C5658400E9776F /* MiscFunctions.swift in Sources */,
+				DD7DEC02270255A1009B1436 /* Message.swift in Sources */,
 				DDC88E2026F6BCD30005B827 /* DetailView.swift in Sources */,
 				DDC88E2226F7BE1D0005B827 /* AdminView.swift in Sources */,
 			);

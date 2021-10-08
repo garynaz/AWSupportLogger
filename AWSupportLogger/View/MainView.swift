@@ -41,6 +41,7 @@ struct MainView: View {
         .onAppear(){
             DispatchQueue.main.async {
                 appViewModel.fetchTicketsData()
+                appViewModel.fetchMessageData()
             }
         }
         .navigationBarBackButtonHidden(true)

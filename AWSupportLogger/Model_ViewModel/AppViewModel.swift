@@ -17,10 +17,10 @@ class AppViewModel: ObservableObject {
     @Published var userInfo: User?
     @Published var userTicketsArray: [Ticket] = [Ticket]()
     @Published var allTicketsArray: [Ticket] = [Ticket]()
-
+    @Published var allMessagesArray: [Message] = [Message]()
     @Published var signedIn: Bool = false
-    var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
     
+    var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
     var handle: AuthStateDidChangeListenerHandle?
     var ticketListener: ListenerRegistration?
     
@@ -35,6 +35,38 @@ class AppViewModel: ObservableObject {
     var downloadImageTask: StorageReference?
     
     
+    func fetchMessageData(){
+        db.collection("Users").document("\(userIdRef)").collection("messages").order(by: "stamp").addSnapshotListener { querySnapshot, error in
+            
+            guard let snapshot = querySnapshot else {
+                print("Unable to return Messages Snapshot, error: \(error!.localizedDescription)")
+                return
+            }
+            
+            snapshot.documentChanges.forEach { diff in
+                if (diff.type == .added) {
+                    self.allMessagesArray.removeAll()
+                    for message in querySnapshot!.documents{
+                        let msgData = message.data()
+                        let lastMsg = msgData["lastMsg"] as! String
+                        let stamp = msgData["stamp"] as! Timestamp
+                        let userId = msgData["userId"] as! String
+                        
+                        let formatter = DateFormatter()
+                        formatter.dateFormat = "dd/MM/yy"
+                        let date = formatter.string(from: stamp.dateValue())
+                        
+                        formatter.dateFormat = "hh:mm a"
+                        let time = formatter.string(from: stamp.dateValue())
+                        
+                        self.allMessagesArray.append(Message(userId: userId, lastMsg: lastMsg, time: time, date: date, stamp: stamp.dateValue()))
+                    }
+                    
+                }
+            }
+        }
+    }
+    
     
     func fetchUserData(completion: @escaping () -> Void){
         db.collection("Users").document("\(userIdRef)").getDocument { [weak self] document, error in
@@ -45,13 +77,13 @@ class AppViewModel: ObservableObject {
                     
                     self?.userInfo = document.map { (documentSnapshot) -> User in
                         let data = documentSnapshot.data()
-
+                        
                         let company = data?["company"] as? String ?? ""
                         let name = data?["name"] as? String ?? ""
                         let admin = data?["admin"] as? Bool ?? false
                         let photoRef = data?["photo"] as? String ?? ""
                         let uid = data?["uid"] as? String ?? ""
-
+                        
                         self?.downloadImageTask = Storage.storage().reference(withPath: photoRef)
                         return User(uid: uid, company: company, name: name, admin: admin, photoRef: photoRef, photoImage: nil)
                     }
@@ -154,7 +186,6 @@ class AppViewModel: ObservableObject {
                         self?.fetchAllTicketData()
                         self?.downloadImageData()
                     }
-                    
                 }
             } else {
                 self?.signedIn = false
@@ -171,9 +202,8 @@ class AppViewModel: ObservableObject {
     }
     
     func signOut(){
-        self.unbind()
         self.signedOutTapped = true //Fixes issue with fetching object and re-triggering fetch request after SignOut.
-
+        
         do {
             try authRef.signOut()
         } catch {
@@ -183,11 +213,11 @@ class AppViewModel: ObservableObject {
     
     func signUp(email: String, password: String, company: String, name: String, admin: Bool, photoRef: String){
         authRef.createUser(withEmail: email, password: password) { result, error in
-
+            
             guard result != nil, error == nil else {
                 return
             }
-                        
+            
             //Success
             self.db.collection("Users").document("\(result!.user.uid)").setData([
                 "company" : "\(company)",
@@ -221,7 +251,7 @@ class AppViewModel: ObservableObject {
         let today = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm E, d MMM y"
-                
+        
         self.rootTicketCollection?.addDocument(data: [
             "date" : "\(formatter.string(from: today))",
             "inquiry" : inquiry,

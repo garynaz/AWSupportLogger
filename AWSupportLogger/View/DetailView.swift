@@ -11,12 +11,11 @@ import Firebase
 struct DetailView: View {
     
     @EnvironmentObject private var appViewModel: AppViewModel
-
+    
     var selectedTicket: Ticket!
-        
     var body: some View {
-        
-        List {
+        List(appViewModel.allMessagesArray){i in
+                        
             VStack(alignment: .leading) {
                 Text(selectedTicket.type)
                     .frame(maxWidth: .infinity)
@@ -32,7 +31,7 @@ struct DetailView: View {
                             .font(.system(size: 20, weight: .light))
                     }
                     Spacer()
-                    
+
                     if selectedTicket.priority == "High"{
                         Text("\(selectedTicket.priority) Priority")
                             .padding()
@@ -49,14 +48,13 @@ struct DetailView: View {
                             .background(Color.green)
                             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     }
-                    
+
                 }
                 Spacer()
                 Text(selectedTicket.inquiry)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.system(size: 20, weight: .light))
             }
-            
         }
         .navigationBarTitle(appViewModel.userInfo!.company, displayMode: .inline)
         .listStyle(PlainListStyle())

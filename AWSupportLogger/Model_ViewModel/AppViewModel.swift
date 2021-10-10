@@ -19,6 +19,8 @@ class AppViewModel: ObservableObject {
     @Published var allTicketsArray: [Ticket] = [Ticket]()
     @Published var allMessagesArray: [Message] = [Message]()
     @Published var signedIn: Bool = false
+    @State var noMsgs = false
+
     
     var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
     var handle: AuthStateDidChangeListenerHandle?
@@ -36,14 +38,20 @@ class AppViewModel: ObservableObject {
     
     
     func fetchMessageData(){
-        db.collection("Users").document("\(userIdRef)").collection("messages").order(by: "stamp").addSnapshotListener { querySnapshot, error in
+        db.collection("Users").document("\(userIdRef)").collection("messages").order(by: "stamp", descending: false).addSnapshotListener { querySnapshot, error in
             
             guard let snapshot = querySnapshot else {
                 print("Unable to return Messages Snapshot, error: \(error!.localizedDescription)")
+                self.noMsgs = true
                 return
             }
             
+            if snapshot.isEmpty{
+                self.noMsgs = true
+            }
+            
             snapshot.documentChanges.forEach { diff in
+                
                 if (diff.type == .added) {
                     self.allMessagesArray.removeAll()
                     for message in querySnapshot!.documents{

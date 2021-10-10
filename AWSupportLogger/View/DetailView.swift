@@ -67,20 +67,21 @@ struct DetailView: View {
             
             if appViewModel.allMessagesArray.count == 0 {
                 
-                if appViewModel.noMsgs {
+//                if appViewModel.noMsgs {
                     Text("Chat With IT Support!")
                         .foregroundColor(Color.black.opacity(0.5))
                         .padding(.top)
                     Spacer()
-                } else {
-                    Spacer()
-                    
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-                        .scaleEffect(3)
-                    
-                    Spacer()
-                }
+//                }
+//                else {
+//                    Spacer()
+//
+//                    ProgressView()
+//                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
+//                        .scaleEffect(2)
+//
+//                    Spacer()
+//                }
                 
             } else {
                 ScrollView(.vertical, showsIndicators: false){

@@ -9,16 +9,18 @@ import SwiftUI
 import Firebase
 
 struct TicketView: View {
-
+    
     @EnvironmentObject private var appViewModel: AppViewModel
     
+    
     var body: some View {
-        List{
+        ScrollView(.vertical, showsIndicators: false){
             ForEach(appViewModel.userTicketsArray) { ticket in
                 NavigationLink(
                     destination: DetailView(selectedTicket: ticket)){
-                    ticketRow(ticket: ticket)
-                }
+                        ticketRow(ticket: ticket)
+                            .padding()
+                    }
             }
             .onDelete(perform: deleteTicket).animation(.default)
         }
@@ -26,8 +28,9 @@ struct TicketView: View {
             EditButton()
         }).animation(.default)
     }
-
-
+    
+    
+    
     func deleteTicket(at offsets: IndexSet){
         for offset in offsets {
             let selectedTicket = appViewModel.userTicketsArray[offset].key!
@@ -50,39 +53,49 @@ struct TicketView_Previews: PreviewProvider {
 
 struct ticketRow: View {
     @EnvironmentObject private var appViewModel: AppViewModel
-
+    
     var ticket : Ticket
-
+    
     var body: some View {
-        VStack(alignment: .leading) {
+        
+        VStack(){
             Text(ticket.type)
                 .frame(maxWidth: .infinity)
-                .padding(.bottom)
                 .font(.system(size: 20, weight: .semibold))
-
-            HStack(alignment: .center) {
-                Text(appViewModel.userInfo!.company)
-                    .font(.system(size: 20, weight: .bold))
+            
+            HStack{
+                VStack(alignment: .leading, spacing: 10){
+                    Text(appViewModel.userInfo!.company)
+                        .font(.system(size: 20, weight: .bold))
+                    Text(ticket.date)
+                        .font(.caption)
+                        .fontWeight(.bold)
+                    
+                    Text("Submitted By: \(appViewModel.userInfo!.name)")
+                        .font(.system(size: 15, weight: .light))
+                    
+                    Text(ticket.inquiry)
+                        .lineLimit(2)
+                        .foregroundColor(.white)
+                }
+                
                 Spacer()
-                Text(ticket.status)
-                    .padding()
-                    .minimumScaleFactor(0.5)
-                    .background(Color.green)
-                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                    .lineLimit(1)
+                
+                VStack{
+                    Text(ticket.status)
+                        .padding()
+                        .background(Color.green)
+                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                        .lineLimit(1)
+                }
             }
-            Text(ticket.date)
-                .font(.caption)
-                .fontWeight(.bold)
-                .foregroundColor(.secondary)
-            Spacer()
-            Spacer()
-            Text("Submitted By: \(appViewModel.userInfo!.name)")
-                .font(.system(size: 15, weight: .light))
-                .padding(.bottom, 5)
-            Text(ticket.inquiry)
-                .lineLimit(2)
-                .foregroundColor(.gray)
+            
         }
+        .padding()
+        .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
+        .frame(height: 180, alignment: .center)
+        .background(Color.secondary)
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        
     }
 }

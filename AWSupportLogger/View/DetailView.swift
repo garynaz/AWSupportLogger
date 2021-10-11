@@ -65,7 +65,7 @@ struct DetailView: View {
             .navigationBarTitle(appViewModel.userInfo!.company, displayMode: .inline)
             .listStyle(PlainListStyle())
             
-            if appViewModel.allMessagesArray.count == 0 {
+            if appViewModel.messagesArray.count == 0 {
                 
 //                if appViewModel.noMsgs {
                     Text("Chat With IT Support!")
@@ -87,30 +87,31 @@ struct DetailView: View {
                 ScrollView(.vertical, showsIndicators: false){
                     VStack(spacing: 8){
                         
-                        ForEach(appViewModel.allMessagesArray){ i in
-                            
+                        ForEach(appViewModel.messagesArray){ i in
                             HStack{
-                                
-                                if i.userId == selectedTicket.userId {
+                                if i.ticketId == selectedTicket.ticketId{
+                                    
+                                    if i.userId == selectedTicket.userId {
 
-                                    Spacer()
+                                        Spacer()
 
-                                Text(i.lastMsg)
-                                    .padding()
-                                    .background(Color.blue)
-                                    .clipShape(ChatBubble(myMsg: true))
-                                    .foregroundColor(.white)
-
-                                } else {
                                     Text(i.lastMsg)
                                         .padding()
-                                        .background(Color.green)
+                                        .background(Color.blue)
                                         .clipShape(ChatBubble(myMsg: true))
                                         .foregroundColor(.white)
-                                        
-                                    Spacer()
+
+                                    } else {
+                                        Text(i.lastMsg)
+                                            .padding()
+                                            .background(Color.green)
+                                            .clipShape(ChatBubble(myMsg: true))
+                                            .foregroundColor(.white)
+                                            
+                                        Spacer()
+                                    }
                                 }
-                                
+                       
                             }
                             .padding(.trailing)
                             .padding(.leading)
@@ -125,7 +126,7 @@ struct DetailView: View {
                 TextField("Enter Message", text: self.$msgTxt).textFieldStyle(RoundedBorderTextFieldStyle())
                 
                 Button(action: {
-                    
+
                 }){
                     Text("Send")
                 }

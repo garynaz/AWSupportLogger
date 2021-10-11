@@ -17,9 +17,10 @@ class Ticket: Identifiable {
     var type: String
     var userId: String
     var key: DocumentReference!
+    var ticketId: String
     
     
-    init(date: String, inquiry: String, priority: String, status: String, type: String, userId: String, key: DocumentReference) {
+    init(date: String, inquiry: String, priority: String, status: String, type: String, userId: String, key: DocumentReference, ticketId: String) {
         self.date = date
         self.inquiry = inquiry
         self.priority = priority
@@ -27,5 +28,6 @@ class Ticket: Identifiable {
         self.type = type
         self.userId = userId
         self.key = key
+        self.ticketId = ticketId
     }
 }

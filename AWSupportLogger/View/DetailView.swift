@@ -12,8 +12,10 @@ struct DetailView: View {
     
     @EnvironmentObject private var appViewModel: AppViewModel
     @State var msgTxt = ""
+    @State var noMsg = true
     
     var selectedTicket: Ticket!
+    
     var body: some View {
         
         VStack{
@@ -65,60 +67,53 @@ struct DetailView: View {
             .navigationBarTitle(appViewModel.userInfo!.company, displayMode: .inline)
             .listStyle(PlainListStyle())
             
-            if appViewModel.messagesArray.count == 0 {
-                
-//                if appViewModel.noMsgs {
-                    Text("Chat With IT Support!")
-                        .foregroundColor(Color.black.opacity(0.5))
-                        .padding(.top)
-                    Spacer()
-//                }
-//                else {
-//                    Spacer()
-//
-//                    ProgressView()
-//                        .progressViewStyle(CircularProgressViewStyle(tint: .blue))
-//                        .scaleEffect(2)
-//
-//                    Spacer()
-//                }
-                
-            } else {
-                ScrollView(.vertical, showsIndicators: false){
-                    VStack(spacing: 8){
-                        
-                        ForEach(appViewModel.messagesArray){ i in
-                            HStack{
-                                if i.ticketId == selectedTicket.ticketId{
-                                    
-                                    if i.userId == selectedTicket.userId {
-
-                                        Spacer()
-
+            
+            if noMsg == true {
+                Text("Chat With IT Support!")
+                    .foregroundColor(Color.black.opacity(0.5))
+                    .padding(.top)
+                Spacer()
+            }
+            
+            ScrollView(.vertical, showsIndicators: false){
+                VStack(spacing: 8){
+                    
+                    ForEach(appViewModel.messagesArray){ i in
+                        HStack{
+                            
+                            if i.ticketId == selectedTicket.ticketId{
+                                
+                                if i.userId == selectedTicket.userId {
+                                    Spacer()
                                     Text(i.lastMsg)
+                                        .onAppear(){
+                                           noMsg = false
+                                        }
                                         .padding()
                                         .background(Color.blue)
                                         .clipShape(ChatBubble(myMsg: true))
                                         .foregroundColor(.white)
-
-                                    } else {
-                                        Text(i.lastMsg)
-                                            .padding()
-                                            .background(Color.green)
-                                            .clipShape(ChatBubble(myMsg: true))
-                                            .foregroundColor(.white)
-                                            
-                                        Spacer()
-                                    }
+                                    
+                                } else {
+                                    Text(i.lastMsg)
+                                        .onAppear(){
+                                           noMsg = false
+                                        }
+                                        .padding()
+                                        .background(Color.green)
+                                        .clipShape(ChatBubble(myMsg: true))
+                                        .foregroundColor(.white)
+                                    
+                                    Spacer()
                                 }
-                       
                             }
-                            .padding(.trailing)
-                            .padding(.leading)
                         }
+                        .padding(.trailing)
+                        .padding(.leading)
                     }
                 }
             }
+            
             
             
             
@@ -126,7 +121,7 @@ struct DetailView: View {
                 TextField("Enter Message", text: self.$msgTxt).textFieldStyle(RoundedBorderTextFieldStyle())
                 
                 Button(action: {
-
+                    appViewModel.sendMsg(message: self.msgTxt, stamp: Timestamp(date: Date()), ticketId: selectedTicket.ticketId, userId: selectedTicket.userId)
                 }){
                     Text("Send")
                 }

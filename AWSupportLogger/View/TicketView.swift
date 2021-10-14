@@ -12,21 +12,22 @@ struct TicketView: View {
     
     @EnvironmentObject private var appViewModel: AppViewModel
     
-    
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false){
+//        ScrollView(.vertical, showsIndicators: false){
+        List{
             ForEach(appViewModel.userTicketsArray) { ticket in
                 NavigationLink(
                     destination: DetailView(selectedTicket: ticket)){
                         ticketRow(ticket: ticket)
-                            .padding()
+//                            .padding()
                     }
             }
-            .onDelete(perform: deleteTicket).animation(.default)
+            .onDelete(perform: deleteTicket).animation(.default) //This functionality only works on List View. Doesn't work with ScrollView.
+//        }
         }
-        .toolbar(content: {
+        .toolbar{
             EditButton()
-        }).animation(.default)
+        }
     }
     
     
@@ -36,6 +37,17 @@ struct TicketView: View {
             let selectedTicket = appViewModel.userTicketsArray[offset].key!
             
             DispatchQueue.main.async {
+                //Deletes all Ticket Messages when deleting Ticket...
+                appViewModel.rootMessageCollection!.document(appViewModel.userIdRef).collection("Message").whereField("ticketId", isEqualTo: selectedTicket.documentID).addSnapshotListener { (querySnapshot, err) in
+                    
+                    guard let snapshot = querySnapshot else {return}
+                    
+                    for message in snapshot.documents{
+                        print("Deleting Message: \(message.data())")
+                        appViewModel.rootMessageCollection!.document(appViewModel.userIdRef).collection("Message").document(message.documentID).delete()
+                    }
+                }
+                
                 appViewModel.rootTicketCollection!.document(selectedTicket.documentID).delete()
                 appViewModel.userTicketsArray.remove(at: offset)
             }
@@ -58,7 +70,7 @@ struct ticketRow: View {
     
     var body: some View {
         
-        VStack(){
+        VStack{
             Text(ticket.type)
                 .frame(maxWidth: .infinity)
                 .font(.system(size: 20, weight: .semibold))
@@ -76,7 +88,7 @@ struct ticketRow: View {
                     
                     Text(ticket.inquiry)
                         .lineLimit(2)
-                        .foregroundColor(.white)
+//                        .foregroundColor(.white)
                 }
                 
                 Spacer()
@@ -92,10 +104,10 @@ struct ticketRow: View {
             
         }
         .padding()
-        .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
-        .frame(height: 180, alignment: .center)
-        .background(Color.secondary)
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+//        .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
+//        .frame(height: 180, alignment: .center)
+//        .background(Color.secondary)
+//        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         
     }
 }

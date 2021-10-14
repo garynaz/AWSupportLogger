@@ -20,8 +20,6 @@ class AppViewModel: ObservableObject {
     @Published var allMessagesArray: [Message] = [Message]()
     @Published var messagesArray: [Message] = [Message]()
     @Published var signedIn: Bool = false
-//    @State var noMsgs = false
-
     
     var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
     var handle: AuthStateDidChangeListenerHandle?
@@ -32,6 +30,8 @@ class AppViewModel: ObservableObject {
     var authHandle : AuthStateDidChangeListenerHandle?
     var rootInfoCollection : CollectionReference!
     var rootTicketCollection: CollectionReference?
+    var rootMessageCollection: CollectionReference?
+    
     var userIdRef = ""
     
     var photoImage: UIImage?
@@ -43,15 +43,8 @@ class AppViewModel: ObservableObject {
 
             guard let snapshot = querySnapshot else {
                 print("Unable to return all Messages Snapshot, error: \(error!.localizedDescription)")
-//                self.noMsgs = true
                 return
             }
-//
-//            if snapshot.isEmpty{
-//                self.noMsgs = true
-//            } else {
-//                self.noMsgs = false
-//            }
 
             snapshot.documentChanges.forEach { diff in
 
@@ -85,6 +78,7 @@ class AppViewModel: ObservableObject {
             
             guard let snapshot = querySnapshot else {
                 print("Unable to return Messages Snapshot, error: \(error!.localizedDescription)")
+                                
                 return
             }
             
@@ -107,8 +101,8 @@ class AppViewModel: ObservableObject {
                         let time = formatter.string(from: stamp.dateValue())
                         
                         self.messagesArray.append(Message(userId: userId, lastMsg: message, time: time, date: date, stamp: stamp.dateValue(), ticketId: ticketId))
+                        print(self.messagesArray.count)
                     }
-                    
                 }
             }
         }
@@ -170,7 +164,7 @@ class AppViewModel: ObservableObject {
     
     
     func fetchTicketsData(){
-        ticketListener = self.rootTicketCollection?.whereField("userId", isEqualTo: self.userInfo!.uid).order(by: "date", descending: false).addSnapshotListener({ querySnapshot, error in
+        ticketListener = self.rootTicketCollection?.whereField("userId", isEqualTo: self.userInfo!.uid).order(by: "date", descending: true).addSnapshotListener({ querySnapshot, error in
             
             guard let snapshot = querySnapshot else {return}
             
@@ -226,6 +220,7 @@ class AppViewModel: ObservableObject {
                 self?.userIdRef = user.uid
                 self?.rootInfoCollection = Firestore.firestore().collection("/Users/")
                 self?.rootTicketCollection = Firestore.firestore().collection("/Ticket/")
+                self?.rootMessageCollection = Firestore.firestore().collection("/Messages/")
                 self?.fetchUserData{
                     if self?.userInfo?.admin == false{
                         self?.downloadImageData()
@@ -311,6 +306,23 @@ class AppViewModel: ObservableObject {
                 print(error!.localizedDescription)
             }
         })
+    }
+    
+    func sendMsg(message: String, stamp: Timestamp, ticketId: String, userId: String){
+        
+        //Returns to TicketView only after sending the first message or after creating new ticket.
+        
+        db.collection("Messages").document(userInfo!.uid).collection("Message").addDocument(data: [
+            "message" : message,
+            "stamp" : stamp,
+            "ticketId" : ticketId,
+            "userId" : userId
+        ]) { error in
+            if error != nil {
+                print(error!.localizedDescription)
+            }
+        }
+        
     }
     
 }

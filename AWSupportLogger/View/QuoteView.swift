@@ -52,6 +52,8 @@ struct QuoteView: View {
                     .pickerStyle(SegmentedPickerStyle())
 
                     TextEditor(text: $inquiryText)
+                        .disableAutocorrection(true)
+                        .autocapitalization(.none)
                         .foregroundColor(.primary)
                         .frame(width: UIScreen.main.bounds.size.width - 20)
                         .frame(maxHeight: .infinity)

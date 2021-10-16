@@ -54,7 +54,6 @@ struct DetailView: View {
                             .background(Color.green)
                             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                     }
-                    
                 }
                 
                 Text(selectedTicket.inquiry)
@@ -87,17 +86,16 @@ struct DetailView: View {
                                     Spacer()
                                     Text(i.lastMsg)
                                         .onAppear(){
-                                           noMsg = false
+                                            noMsg = false
                                         }
                                         .padding()
                                         .background(Color.blue)
                                         .clipShape(ChatBubble(myMsg: true))
                                         .foregroundColor(.white)
-                                    
                                 } else {
                                     Text(i.lastMsg)
                                         .onAppear(){
-                                           noMsg = false
+                                            noMsg = false
                                         }
                                         .padding()
                                         .background(Color.green)
@@ -114,14 +112,14 @@ struct DetailView: View {
                 }
             }
             
-            
-            
-            
             HStack{
-                TextField("Enter Message", text: self.$msgTxt).textFieldStyle(RoundedBorderTextFieldStyle())
+                TextField("Enter Message", text: self.$msgTxt)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
                 
                 Button(action: {
-                    appViewModel.sendMsg(message: self.msgTxt, stamp: Timestamp(date: Date()), ticketId: selectedTicket.ticketId, userId: selectedTicket.userId)
+                    appViewModel.sendMsg(message: self.msgTxt, stamp: Timestamp(date: Date()), ticketId: selectedTicket.ticketId, userId: appViewModel.userIdRef)
                 }){
                     Text("Send")
                 }

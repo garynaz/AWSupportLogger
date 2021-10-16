@@ -38,8 +38,10 @@ class AppViewModel: ObservableObject {
     var downloadImageTask: StorageReference?
     
     
+    //Delete Message Collection and save all Docs at Messages collection instead.
+    
     func fetchAllMessageData(){
-        db.collection("Users").document("\(userIdRef)").collection("messages").order(by: "stamp", descending: false).addSnapshotListener { querySnapshot, error in
+        db.collection("Messages").document("\(userIdRef)").collection("Message").order(by: "stamp", descending: false).addSnapshotListener { querySnapshot, error in
 
             guard let snapshot = querySnapshot else {
                 print("Unable to return all Messages Snapshot, error: \(error!.localizedDescription)")
@@ -226,6 +228,7 @@ class AppViewModel: ObservableObject {
                         self?.downloadImageData()
                     } else {
                         self?.fetchAllTicketData()
+                        self?.fetchAllMessageData()
                         self?.downloadImageData()
                     }
                 }

@@ -38,15 +38,11 @@ struct MainView: View {
             }
             Spacer()
         }
-        .onAppear(){
-            DispatchQueue.main.async {
-                appViewModel.fetchTicketsData()
-                appViewModel.fetchMessageData()
-            }
-        }
         .navigationBarBackButtonHidden(true)
         .navigationTitle(appViewModel.userInfo!.company)
         .navigationBarItems(leading: Button(action: {
+            appViewModel.allMessagesArray.removeAll()
+            appViewModel.userTicketsArray.removeAll()
             appViewModel.signOut()
         }) {
             HStack {

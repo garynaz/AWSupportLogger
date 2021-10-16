@@ -59,6 +59,8 @@ struct AdminView: View {
         .toolbar{
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
+                    appViewModel.allMessagesArray.removeAll()
+                    appViewModel.allTicketsArray.removeAll()
                     appViewModel.signOut()
                 } label: {
                     Text("Sign Out")

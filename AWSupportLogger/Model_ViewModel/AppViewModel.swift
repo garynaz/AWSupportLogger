@@ -18,7 +18,6 @@ class AppViewModel: ObservableObject {
     @Published var userTicketsArray: [Ticket] = [Ticket]()
     @Published var allTicketsArray: [Ticket] = [Ticket]()
     @Published var allMessagesArray: [Message] = [Message]()
-    @Published var messagesArray: [Message] = [Message]()
     @Published var signedIn: Bool = false
     
     var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
@@ -37,11 +36,9 @@ class AppViewModel: ObservableObject {
     var photoImage: UIImage?
     var downloadImageTask: StorageReference?
     
-    
-    //Delete Message Collection and save all Docs at Messages collection instead.
-    
+        
     func fetchAllMessageData(){
-        db.collection("Messages").document("\(userIdRef)").collection("Message").order(by: "stamp", descending: false).addSnapshotListener { querySnapshot, error in
+        db.collection("Messages").order(by: "stamp", descending: false).addSnapshotListener { querySnapshot, error in
 
             guard let snapshot = querySnapshot else {
                 print("Unable to return all Messages Snapshot, error: \(error!.localizedDescription)")
@@ -54,62 +51,27 @@ class AppViewModel: ObservableObject {
                     self.allMessagesArray.removeAll()
                     for message in querySnapshot!.documents{
                         let msgData = message.data()
-                        let lastMsg = msgData["lastMsg"] as! String
-                        let stamp = msgData["stamp"] as! Timestamp
-                        let ticketId = msgData["ticketId"] as! String
-                        let userId = msgData["userId"] as! String
-
-                        let formatter = DateFormatter()
-                        formatter.dateFormat = "dd/MM/yy"
-                        let date = formatter.string(from: stamp.dateValue())
-
-                        formatter.dateFormat = "hh:mm a"
-                        let time = formatter.string(from: stamp.dateValue())
-
-                        self.allMessagesArray.append(Message(userId: userId, lastMsg: lastMsg, time: time, date: date, stamp: stamp.dateValue(), ticketId: ticketId))
-                    }
-
-                }
-            }
-        }
-    }
-    
-    
-    func fetchMessageData(){
-        db.collection("Messages").document("\(userIdRef)").collection("Message").order(by: "stamp", descending: false).addSnapshotListener { querySnapshot, error in
-            
-            guard let snapshot = querySnapshot else {
-                print("Unable to return Messages Snapshot, error: \(error!.localizedDescription)")
-                                
-                return
-            }
-            
-            snapshot.documentChanges.forEach { diff in
-                
-                if (diff.type == .added) {
-                    self.messagesArray.removeAll()
-                    for message in querySnapshot!.documents{
-                        let msgData = message.data()
                         let message = msgData["message"] as! String
                         let stamp = msgData["stamp"] as! Timestamp
                         let ticketId = msgData["ticketId"] as! String
                         let userId = msgData["userId"] as! String
-                        
+
                         let formatter = DateFormatter()
                         formatter.dateFormat = "dd/MM/yy"
                         let date = formatter.string(from: stamp.dateValue())
-                        
+
                         formatter.dateFormat = "hh:mm a"
                         let time = formatter.string(from: stamp.dateValue())
-                        
-                        self.messagesArray.append(Message(userId: userId, lastMsg: message, time: time, date: date, stamp: stamp.dateValue(), ticketId: ticketId))
-                        print(self.messagesArray.count)
+
+                        self.allMessagesArray.append(Message(userId: userId, lastMsg: message, time: time, date: date, stamp: stamp.dateValue(), ticketId: ticketId))
+                        print(self.allMessagesArray.count)
                     }
+
                 }
             }
         }
     }
-        
+    
     
     func fetchUserData(completion: @escaping () -> Void){
         db.collection("Users").document("\(userIdRef)").getDocument { [weak self] document, error in
@@ -225,6 +187,8 @@ class AppViewModel: ObservableObject {
                 self?.rootMessageCollection = Firestore.firestore().collection("/Messages/")
                 self?.fetchUserData{
                     if self?.userInfo?.admin == false{
+                        self?.fetchTicketsData()
+                        self?.fetchAllMessageData()
                         self?.downloadImageData()
                     } else {
                         self?.fetchAllTicketData()
@@ -312,10 +276,8 @@ class AppViewModel: ObservableObject {
     }
     
     func sendMsg(message: String, stamp: Timestamp, ticketId: String, userId: String){
-        
-        //Returns to TicketView only after sending the first message or after creating new ticket.
-        
-        db.collection("Messages").document(userInfo!.uid).collection("Message").addDocument(data: [
+                
+        db.collection("Messages").addDocument(data: [
             "message" : message,
             "stamp" : stamp,
             "ticketId" : ticketId,

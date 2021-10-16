@@ -76,8 +76,7 @@ struct DetailView: View {
             
             ScrollView(.vertical, showsIndicators: false){
                 VStack(spacing: 8){
-                    
-                    ForEach(appViewModel.messagesArray){ i in
+                    ForEach(appViewModel.allMessagesArray){ i in
                         HStack{
                             
                             if i.ticketId == selectedTicket.ticketId{

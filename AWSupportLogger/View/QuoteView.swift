@@ -21,14 +21,14 @@ struct QuoteView: View {
 
     var body: some View {
 
-            VStack{
+            VStack {
+                
                 VStack(alignment: .leading) {
                     HStack {
                         Image(systemName: "building.2.crop.circle")
                             .font(.system(size: 40))
                         Text(appViewModel.userInfo!.company)
                             .disabled(true)
-
                     }
 
                     HStack {
@@ -36,7 +36,6 @@ struct QuoteView: View {
                             .font(.system(size: 40))
                         Text(appViewModel.userInfo!.name)
                             .disabled(true)
-
                     }
                 }
 
@@ -44,36 +43,44 @@ struct QuoteView: View {
                     Text("Priority Level")
                         .padding(.top)
                         .font(.system(size: 20, weight: .bold, design: .rounded))
+                    
                     Picker(selection: $selectedPriority, label: Text("Priority")) {
                         ForEach(priorities, id: \.self){
                             Text("\($0)")
                         }
                     }
+                    .padding()
                     .pickerStyle(SegmentedPickerStyle())
 
                     TextEditor(text: $inquiryText)
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
-                        .foregroundColor(.primary)
-                        .frame(width: UIScreen.main.bounds.size.width - 20)
+                        .frame(width: UIScreen.main.bounds.size.width - 50)
                         .frame(maxHeight: .infinity)
-                        .background(Color.black)
-                        .border(Color.gray)
+                        .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
                         .onTapGesture {
                             if inquiryText == placeholderString {
                                 inquiryText = ""
                             }
                         }
                 }
+                
                 Button("Submit Request") {
                     appViewModel.addTicket(inquiry: inquiryText, priority: selectedPriority, status: "OPEN", type: "Quote")
                     self.presentation.wrappedValue.dismiss()
                 }
-                .frame(width: UIScreen.main.bounds.size.width, height: 70, alignment: .center)
+                .frame(width: UIScreen.main.bounds.size.width - 50, height: 70, alignment: .center)
                 .font(.title2)
                 .background(Color.gray)
-                .opacity(0.8)
+                .cornerRadius(15)
+                .opacity(0.5)
+                
+                Spacer()
             }
+            .onAppear(){
+                UITextView.appearance().backgroundColor = .clear
+            }
+            
     }
 }
 

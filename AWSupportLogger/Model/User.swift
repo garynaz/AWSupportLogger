@@ -8,7 +8,8 @@
 import SwiftUI
 import Firebase
 
-class User: Identifiable {
+struct User: Identifiable {
+    var id: UUID = UUID()
     var uid: String
     var company: String
     var name: String

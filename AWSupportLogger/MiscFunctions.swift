@@ -15,19 +15,6 @@ func ??<T>(lhs: Binding<Optional<T>>, rhs: T) -> Binding<T> {
     )
 }
 
-//func imagesFromCoreData(object: Data?) -> [Image]? {
-//    var retVal = [Image]()
-//
-//    guard let object = object else { return nil }
-//    if let dataArray = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSArray.self, from: object) {
-//        for data in dataArray {
-//            if let data = data as? Data, let image = UIImage(data: data) {
-//                retVal.append(Image(uiImage: image))
-//            }
-//        }
-//    }
-//    return retVal
-//}
 
 //Bellow extensions are used to dismiss keyboard upon outside tap gesture.
 extension UIApplication {

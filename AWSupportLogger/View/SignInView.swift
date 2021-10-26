@@ -13,70 +13,91 @@ struct SignInView: View {
     
     @State private var username : String = ""
     @State private var password : String = ""
-    @State private var shouldShowLoginAlert: Bool = false
+    @State private var visiblePass : Bool = false
     @State var selectedImageArray : [Image] = []
     
-    var disableLoginButton : Bool {
-        return self.username.isEmpty || self.password.isEmpty
-    }
     
     var body: some View {
-        
-        VStack{
-            
-            Image(uiImage: #imageLiteral(resourceName: "awText"))
-                .resizable()
-                .frame(width: 180, height: 100)
-                .padding(.bottom, 50)
-            
-            TextField("Email", text: $username)
-                .padding(.leading)
-                .disableAutocorrection(true)
-                .autocapitalization(.none)
-            Rectangle().fill(Color.gray.opacity(0.25)).frame(height: 1, alignment: .center).padding(.bottom)
-                .padding(.bottom)
-                .onChange(of: self.username, perform: { value in
-                    if value.count > 10 {
-                        self.username = String(value.prefix(20)) //Max 20 Characters for Username.
-                    }
-                })
-            
-            SecureField("Password", text: $password)
-                .padding(.leading)
-                .disableAutocorrection(true)
-                .autocapitalization(.none)
-            Rectangle().fill(Color.gray.opacity(0.25)).frame(height: 1, alignment: .center)
-                .onChange(of: self.username, perform: { value in
-                    if value.count > 10 {
-                        self.username = String(value.prefix(10)) //Max 10 Characters for Password.
-                    }
-                })
-            
-            
-            //SignIn Button
-            Button(action: {
-                viewModel.signIn(email: username, password: password)
-            }, label: {
-                Text("Sign In")
-                    .disabled(disableLoginButton)
-                    .frame(width: 300, height: 50)
-                    .background(Color.green)
-                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        ZStack{
+            VStack{
+                
+                Image(uiImage: #imageLiteral(resourceName: "awText"))
+                    .resizable()
+                    .frame(width: 180, height: 100)
+                    .padding(.bottom, 50)
+                
+                TextField("Email", text: $username)
                     .padding()
-            })
+                    .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
+                    .onChange(of: self.username, perform: { value in
+                        if value.count > 10 {
+                            self.username = String(value.prefix(20)) //Max 20 Characters for Username.
+                        }
+                    })
+                    .padding(.bottom)
+                
+                HStack(spacing: 15){
+                    VStack{
+                        if self.visiblePass {
+                            TextField("Password", text: $password)
+                                .disableAutocorrection(true)
+                                .autocapitalization(.none)
+                                .onChange(of: self.password, perform: { value in
+                                    if value.count > 10 {
+                                        self.password = String(value.prefix(10)) //Max 10 Characters for Password.
+                                    }
+                                })
+                        } else {
+                            SecureField("Password", text: $password)
+                                .disableAutocorrection(true)
+                                .autocapitalization(.none)
+                                .onChange(of: self.password, perform: { value in
+                                    if value.count > 10 {
+                                        self.password = String(value.prefix(10)) //Max 10 Characters for Password.
+                                    }
+                                })
+                        }
+                    }
+                    
+                    Button {
+                        self.visiblePass.toggle()
+                    } label: {
+                        Image(systemName: self.visiblePass ? "eye.slash.fill" : "eye.fill")
+                    }
+                }
+                .padding()
+                .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                
+                
+                //SignIn Button
+                Button(action: {
+                    viewModel.signIn(email: username, password: password)
+                }, label: {
+                    Text("Sign In")
+                        .frame(width: 300, height: 50)
+                        .background(Color.green)
+                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                        .padding()
+                })
+                
+                
+                //SignUp Button
+                NavigationLink("Create Account", destination: SignUpView())
+                    .frame(width: 300, height: 50)
+                    .background(Color.orange)
+                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                
+            }
+            .padding(.horizontal, 25)
+            .navigationTitle("AW Support")
             
-            
-            //SignUp Button
-            NavigationLink("Create Account", destination: SignUpView())
-                .frame(width: 300, height: 50)
-                .background(Color.orange)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            
+            if viewModel.alert{
+                ErrorView(alert: viewModel.alert, error: viewModel.error)
+            }
         }
-        .navigationTitle("AW Support")
-        
     }
-    
     
 }
 

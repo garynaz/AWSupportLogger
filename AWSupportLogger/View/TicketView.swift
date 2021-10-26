@@ -13,17 +13,14 @@ struct TicketView: View {
     @EnvironmentObject private var appViewModel: AppViewModel
     
     var body: some View {
-//        ScrollView(.vertical, showsIndicators: false){
         List{
             ForEach(appViewModel.userTicketsArray) { ticket in
                 NavigationLink(
                     destination: DetailView(selectedTicket: ticket)){
                         ticketRow(ticket: ticket)
-//                            .padding()
                     }
             }
             .onDelete(perform: deleteTicket).animation(.default) //This functionality only works on List View. Doesn't work with ScrollView.
-//        }
         }
         .toolbar{
             EditButton()
@@ -88,7 +85,6 @@ struct ticketRow: View {
                     
                     Text(ticket.inquiry)
                         .lineLimit(2)
-//                        .foregroundColor(.white)
                 }
                 
                 Spacer()
@@ -104,10 +100,6 @@ struct ticketRow: View {
             
         }
         .padding()
-//        .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
-//        .frame(height: 180, alignment: .center)
-//        .background(Color.secondary)
-//        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         
     }
 }

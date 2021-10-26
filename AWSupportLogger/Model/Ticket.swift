@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 
-class Ticket: Identifiable {
+struct Ticket: Identifiable {
     var id: UUID = UUID()
     var date: String
     var inquiry: String

@@ -13,13 +13,15 @@ struct SignUpView: View {
     
     //Test Image Data
     let imageStorageRef = Storage.storage().reference()
+    
     @State private var selectedImageURL: URL?
-
+    
     
     @State private var name: String = ""
     @State private var company: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
+    @State private var repassword: String = ""
     @State private var photo: Image?
     @State private var admin: Bool = false
     
@@ -31,21 +33,40 @@ struct SignUpView: View {
     @State var selectedImageArray : [Image] = []
     
     
-    var disableSignUpButton : Bool {
-        return self.email.isEmpty || self.password.isEmpty || self.name.isEmpty || self.company.isEmpty
-    }
-    
     
     var body: some View {
-        
-        ScrollView{
+        ZStack{
             VStack{
+                
+                Spacer()
+                
+                ZStack{
+                    if photo != nil {
+                        photo?
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 150, height: 150)
+                            .clipShape(Circle())
+                    } else {
+                        Circle()
+                            .fill(Color.secondary)
+                            .frame(width: 150, height: 150)
+                        Text("Select a Photo")
+                            .foregroundColor(.white)
+                            .font(.headline)
+                    }
+                }
+                .onTapGesture {
+                    self.showingImagePicker = true
+                }
+                .offset(y: -20)
+                            
                 Group {
                     TextField("Company", text: $company)
-                        .padding(.leading)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
-                    Divider()
                         .padding(.bottom)
                         .onChange(of: self.company, perform: { value in
                             if value.count > 30 {
@@ -54,11 +75,11 @@ struct SignUpView: View {
                         })
                     
                     TextField("First and Last Name", text: $name)
-                        .padding(.leading)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
-                    Divider()
-                        .padding(.bottom, 30)
+                        .padding(.bottom)
                         .onChange(of: self.name, perform: { value in
                             if value.count > 30 {
                                 self.name = String(value.prefix(30))
@@ -66,10 +87,10 @@ struct SignUpView: View {
                         })
                     
                     TextField("Email", text: $email)
-                        .padding(.leading)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
-                    Divider()
                         .padding(.bottom)
                         .onChange(of: self.email, perform: { value in
                             if value.count > 30 {
@@ -78,75 +99,69 @@ struct SignUpView: View {
                         })
                     
                     SecureField("Password", text: $password)
-                        .padding(.leading)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
-                    Divider()
-                        .padding(.bottom, 30)
+                        .padding(.bottom)
                         .onChange(of: self.password, perform: { value in
                             if value.count > 30 {
                                 self.password = String(value.prefix(30))
                             }
                         })
                     
+                    SecureField("Password", text: $repassword)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                        .disableAutocorrection(true)
+                        .autocapitalization(.none)
+                        .onChange(of: self.repassword, perform: { value in
+                            if value.count > 30 {
+                                self.password = String(value.prefix(30))
+                            }
+                        })
                 }
                 
-                VStack{
-                    Text("ADMIN")
-                        .foregroundColor(admin ? .green : .gray)
-                    Toggle("", isOn: $admin)
-                        .labelsHidden()
-                }
-                .padding()
-                .overlay(
-                    RoundedRectangle(cornerRadius: 15)
-                        .stroke(lineWidth: 2)
-                        .foregroundColor(admin ? .green : .gray)
-                )
-                .padding(.bottom)
+                Spacer()
                 
-                
-                ZStack{
-                    if photo != nil {
-                        photo?
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 200, height: 200)
-                            .clipShape(Circle())
-                    } else {
-                        Circle()
-                            .fill(Color.secondary)
-                            .frame(width: 200, height: 200)
-                        Text("Tap to select a photo")
-                            .foregroundColor(.white)
-                            .font(.headline)
+                HStack{
+                    HStack{
+                        Text("ADMIN")
+                            .foregroundColor(admin ? .green : .gray)
+                        Toggle("", isOn: $admin)
+                            .labelsHidden()
                     }
+                    .padding()
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(lineWidth: 2)
+                            .foregroundColor(admin ? .green : .gray)
+                    )
+
                 }
-                .onTapGesture {
-                    self.showingImagePicker = true
-                }
-                .padding(.bottom, 50)
-                                
+                
+                Spacer()
+                
                 Button(action: {
-                    //Uploads image to storage...
-                    let randomID = UUID.init().uuidString
-                    
-                    Storage.storage().reference().child("images/\(randomID).jpg").putFile(from: self.selectedImageURL!, metadata: nil) { metadata, error in
-                        viewModel.signUp(email: email, password: password, company: company, name: name, admin: admin, photoRef: "images/\(randomID).jpg")
-                    }
+                                    
+                    viewModel.signUp(email: email, password: password, repassword: repassword, company: company, name: name, admin: admin, imageURL: self.selectedImageURL)
                     
                 }, label: { Text("Create Account")
-                    .disabled(disableSignUpButton)
-                    .frame(width: 300, height: 50)
-                    .background(Color.green)
-                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                        .frame(width: 300, height: 50)
+                        .background(Color.green)
+                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 })
                 
             }
+            .padding(.horizontal, 30)
             .sheet(isPresented: $showingImagePicker, onDismiss: loadImage){
                 ImagePicker(image: self.$inputImage, selectedImageURL: self.$selectedImageURL)
             }
+            if viewModel.alert{
+                ErrorView(alert: viewModel.alert, error: viewModel.error)
+            }
         }
+                
         
     }
     
@@ -154,6 +169,7 @@ struct SignUpView: View {
         guard let inputImage = inputImage else { return }
         photo = Image(uiImage: inputImage)
     }
+    
 }
 
 struct SignUpView_Previews: PreviewProvider {

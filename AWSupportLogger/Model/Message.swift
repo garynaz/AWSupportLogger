@@ -8,7 +8,7 @@
 import SwiftUI
 import Firebase
 
-class Message: Identifiable {
+struct Message: Identifiable {
     var id: UUID = UUID()
     var userId: String
     var lastMsg: String

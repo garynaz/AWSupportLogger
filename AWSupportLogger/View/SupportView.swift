@@ -49,6 +49,7 @@ struct SupportView: View {
                             Text("\($0)")
                         }
                     }
+                    .padding()
                     .pickerStyle(SegmentedPickerStyle())
                 }
 
@@ -56,11 +57,9 @@ struct SupportView: View {
                 TextEditor(text: $inquiryText)
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
-                    .foregroundColor(.primary)
-                    .frame(width: UIScreen.main.bounds.size.width - 20)
+                    .frame(width: UIScreen.main.bounds.size.width - 50)
                     .frame(maxHeight: .infinity)
-                    .background(Color.black)
-                    .border(Color.gray)
+                    .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
                     .onTapGesture {
                         if inquiryText == placeholderString {
                             inquiryText = ""
@@ -71,11 +70,13 @@ struct SupportView: View {
                 appViewModel.addTicket(inquiry: inquiryText, priority: selectedPriority, status: "OPEN", type: "Support")
                 self.presentation.wrappedValue.dismiss()
             }
-            .frame(width: UIScreen.main.bounds.size.width, height: 70, alignment: .center)
+            .frame(width: UIScreen.main.bounds.size.width - 50, height: 70, alignment: .center)
             .font(.title2)
             .background(Color.gray)
-            .opacity(0.8)
-
+            .cornerRadius(15)
+            .opacity(0.5)
+            
+            Spacer()
         }
     }
     

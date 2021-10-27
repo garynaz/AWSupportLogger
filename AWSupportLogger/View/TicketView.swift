@@ -11,20 +11,38 @@ import Firebase
 struct TicketView: View {
     
     @EnvironmentObject private var appViewModel: AppViewModel
+    @State var emptyView:Bool = false
     
     var body: some View {
-        List{
-            ForEach(appViewModel.userTicketsArray) { ticket in
-                NavigationLink(
-                    destination: DetailView(selectedTicket: ticket)){
-                        ticketRow(ticket: ticket)
+        ZStack{
+            if emptyView{
+                Text("No Active Tickets")
+                    .opacity(0.5)
+                    .foregroundColor(.gray)
+                    .font(.system(size: 30, weight: .semibold, design: .default))
+                    .offset(y: -50)
+            } else{
+                List{
+                    ForEach(appViewModel.userTicketsArray) { ticket in
+                        NavigationLink(
+                            destination: DetailView(selectedTicket: ticket)){
+                                ticketRow(ticket: ticket)
+                            }
                     }
+                    .onDelete(perform: deleteTicket)
+        //            .animation(.default, value: nil) //This functionality only works on List View. Doesn't work with ScrollView.
+                }
+                .toolbar{
+                    EditButton()
+                }
             }
-            .onDelete(perform: deleteTicket).animation(.default) //This functionality only works on List View. Doesn't work with ScrollView.
         }
-        .toolbar{
-            EditButton()
+        .onAppear(){
+            if appViewModel.userTicketsArray.isEmpty{
+                emptyView = true
+            }
         }
+        
     }
     
     

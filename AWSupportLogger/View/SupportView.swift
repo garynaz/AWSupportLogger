@@ -12,38 +12,35 @@ struct SupportView: View {
     
     @EnvironmentObject private var appViewModel: AppViewModel
     @Environment(\.presentationMode) var presentation //Tells the view to dismiss itself using its presentation mode environment key.
-
+    
     @State private var inquiryText : String = "Enter Your Inquiry..."
     @State private var selectedPriority : String = "Low"
-
+    
     var placeholderString = "Enter Your Inquiry..."
     var priorities = ["Low", "Medium", "High"]
-
-
+    
+    
     var body: some View {
-
-        VStack{
-            VStack(alignment: .leading) {
-                HStack {
-                    Image(systemName: "building.2.crop.circle")
-                        .font(.system(size: 40))
-                    Text(appViewModel.userInfo!.company)
-                        .disabled(true)
-                }
-
-                HStack {
-                    Image(systemName: "person.circle")
-                        .font(.system(size: 40))
-                    Text(appViewModel.userInfo!.name)
-                        .disabled(true)
-                }
+        
+        VStack {
+            
+            VStack {
+                Text(appViewModel.userInfo!.name)
+                    .foregroundColor(.blue)
+                    .font(.system(size: 20, weight: .medium, design: .default))
+                Image(uiImage: appViewModel.photoImage!)
+                    .resizable()
+                    .scaledToFit()
+                    .clipShape(Circle())
+                    .frame(width: 100, height: 100)
             }
-
+            .offset(y: -20)
+            
             VStack {
                 VStack {
                     Text("Priority Level")
                         .padding(.top)
-                        .font(.system(size: 20, weight: .bold, design: .rounded))
+                        .font(.system(size: 20, weight: .ultraLight, design: .rounded))
                     Picker(selection: $selectedPriority, label: Text("Priority")) {
                         ForEach(priorities, id: \.self){
                             Text("\($0)")
@@ -52,14 +49,14 @@ struct SupportView: View {
                     .padding()
                     .pickerStyle(SegmentedPickerStyle())
                 }
-
-
+                
+                
                 TextEditor(text: $inquiryText)
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
                     .frame(width: UIScreen.main.bounds.size.width - 50)
                     .frame(maxHeight: .infinity)
-                    .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                    .background(RoundedRectangle(cornerRadius: 8).stroke(Color.black.opacity(0.2), lineWidth: 1))
                     .onTapGesture {
                         if inquiryText == placeholderString {
                             inquiryText = ""
@@ -83,7 +80,7 @@ struct SupportView: View {
 }
 
 struct SupportView_Previews: PreviewProvider {
-
+    
     static var previews: some View {
         SupportView()
     }

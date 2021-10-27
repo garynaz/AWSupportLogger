@@ -39,7 +39,7 @@ struct MainView: View {
             Spacer()
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle(appViewModel.userInfo!.company)
+        .navigationBarTitle(appViewModel.userInfo!.company, displayMode: .large)
         .navigationBarItems(leading: Button(action: {
             appViewModel.allMessagesArray.removeAll()
             appViewModel.userTicketsArray.removeAll()

@@ -43,9 +43,9 @@ The purpose of this project is to build an application to provide a platform for
 
 
 ## Inspiration
-This app was designed to facilitate interaction interactions between clients and IT Support Specialists as an alterantive to using email.
-The idea is to provide clients with a platform where they can immediately check on the status of their ticket submissions, while also 
-having the option to chat directly with the IT Specialist who is working on fulfilling the client's request.
+This app was designed to facilitate interaction between clients and IT Support Specialists as an alterantive to using email and phone conversation.
+The idea is to provide clients with a platform where they can immediately check on the status of their submitted tickets, while also 
+having the option to chat directly with the IT Specialist who is assigned to fulfill the client's request.
 
 ## Contact
 Created by Gary Nazarian - feel free to contact me at garynaz@icloud.com

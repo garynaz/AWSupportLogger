@@ -1,7 +1,7 @@
 # AWSupportLogger
 <a href="https://www.garynazdev.com/"><img src = "Images/Logo.png">
 
-> A Utility Application for Submitting and Tracking IT Technican Support Tickets.
+> A Utility Application for Submitting and Tracking IT Support Tickets.
 ## Table of contents
 * [General info](#general-info)
 * [Screenshots](#screenshots)
@@ -14,7 +14,7 @@
 * [Contact](#contact)
 
 ## General info
-The purpose of this project is to build an application to provide a platform for business clients to submit their support tickets, where they can also monitor the status of their tickets without the need for direct contact with an IT Support Specialist.
+The purpose of this project is to build an application to provide a platform for business clients to submit their support tickets, where they can also monitor the status of their tickets without the need for phone or email contact with an IT Support Specialist.
 
 ## Screenshots
 <img src="Images/Main_iphone12prosilver_portrait.png" width=220> <img src="Images/Login_iphone12prosilver_portrait.png" width=220> <img src="Images/SignUp_iphone12prosilver_portrait.png" width=220> <img src="Images/Support_iphone12prosilver_portrait.png" width=220> <img src="Images/Ticket_iphone12prosilver_portrait.png" width=220> <img src="Images/Chat_iphone12prosilver_portrait.png" width=220> <img src="Images/Chat_Empty_iphone12prosilver_portrait.png" width=220>

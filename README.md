@@ -1,5 +1,5 @@
 # AWSupportLogger
-<a href="https://www.garynazdev.com/"><img src = "images/Group@3x.png">
+<a href="https://www.garynazdev.com/"><img src = "Images/Logo.png">
 
 > A Marketplace for Buying, Selling, and Trading your Retro and Vintage Video Game Products.
 ## Table of contents

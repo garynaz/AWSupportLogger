@@ -36,17 +36,17 @@ struct QuoteView: View {
             .offset(y: -20)
             
             VStack {
-                Text("Priority Level")
-                    .padding(.top)
-                    .font(.system(size: 20, weight: .ultraLight, design: .rounded))
+                Text("Priority")
+                    .font(.system(size: 20, weight: .light, design: .rounded))
                 
                 Picker(selection: $selectedPriority, label: Text("Priority")) {
                     ForEach(priorities, id: \.self){
                         Text("\($0)")
                     }
                 }
-                .padding()
+                .padding(.horizontal, 50)
                 .pickerStyle(SegmentedPickerStyle())
+                .colorMultiply(Color.blue)
                 
                 TextEditor(text: $inquiryText)
                     .disableAutocorrection(true)

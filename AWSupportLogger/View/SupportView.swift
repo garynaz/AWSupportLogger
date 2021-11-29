@@ -27,7 +27,7 @@ struct SupportView: View {
             VStack {
                 Text(appViewModel.userInfo!.name)
                     .foregroundColor(.blue)
-                    .font(.system(size: 20, weight: .medium, design: .default))
+                    .font(.system(size: 20, weight: .medium, design: .rounded))
                 Image(uiImage: appViewModel.photoImage!)
                     .resizable()
                     .scaledToFit()
@@ -38,16 +38,16 @@ struct SupportView: View {
             
             VStack {
                 VStack {
-                    Text("Priority Level")
-                        .padding(.top)
-                        .font(.system(size: 20, weight: .ultraLight, design: .rounded))
+                    Text("Priority")
+                        .font(.system(size: 20, weight: .light, design: .rounded))
                     Picker(selection: $selectedPriority, label: Text("Priority")) {
                         ForEach(priorities, id: \.self){
                             Text("\($0)")
                         }
                     }
-                    .padding()
+                    .padding(.horizontal, 50)
                     .pickerStyle(SegmentedPickerStyle())
+                    .colorMultiply(Color.blue)
                 }
                 
                 

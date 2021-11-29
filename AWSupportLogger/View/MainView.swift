@@ -38,6 +38,9 @@ struct MainView: View {
             }
             Spacer()
         }
+        .onAppear(perform: {
+            appViewModel.isLoading = false
+        })
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle(appViewModel.userInfo!.company, displayMode: .large)
         .navigationBarItems(leading: Button(action: {

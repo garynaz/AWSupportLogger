@@ -28,7 +28,19 @@
 		DDC88E1E26EEC8C90005B827 /* QuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC88E1D26EEC8C90005B827 /* QuoteView.swift */; };
 		DDC88E2026F6BCD30005B827 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC88E1F26F6BCD30005B827 /* DetailView.swift */; };
 		DDC88E2226F7BE1D0005B827 /* AdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC88E2126F7BE1D0005B827 /* AdminView.swift */; };
+		DDDCA02027506BEF00FF50DD /* ValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDCA01F27506BEF00FF50DD /* ValidationService.swift */; };
+		DDFFD28A272E1D650091CD6F /* AWSupportLogger_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFFD289272E1D650091CD6F /* AWSupportLogger_Tests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DDFFD28B272E1D650091CD6F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD8FE2F526B2347100916A80 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DD8FE2FC26B2347100916A80;
+			remoteInfo = AWSupportLogger;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		2D4B471D7167F2C5850706F8 /* Pods-AWSupportLogger.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AWSupportLogger.release.xcconfig"; path = "Target Support Files/Pods-AWSupportLogger/Pods-AWSupportLogger.release.xcconfig"; sourceTree = "<group>"; };
@@ -56,6 +68,9 @@
 		DDC88E1D26EEC8C90005B827 /* QuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteView.swift; sourceTree = "<group>"; };
 		DDC88E1F26F6BCD30005B827 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		DDC88E2126F7BE1D0005B827 /* AdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AdminView.swift; path = "/Users/owner1/Desktop/Practice Projects/AWSupportLogger/AWSupportLogger/View/AdminView.swift"; sourceTree = "<absolute>"; };
+		DDDCA01F27506BEF00FF50DD /* ValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationService.swift; sourceTree = "<group>"; };
+		DDFFD287272E1D650091CD6F /* AWSupportLogger_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AWSupportLogger_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDFFD289272E1D650091CD6F /* AWSupportLogger_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSupportLogger_Tests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +79,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				406E2F91BD67CED2B96C09E6 /* Pods_AWSupportLogger.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDFFD284272E1D650091CD6F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				DD8FE2FF26B2347100916A80 /* AWSupportLogger */,
+				DDFFD288272E1D650091CD6F /* AWSupportLogger_Tests */,
 				DD8FE2FE26B2347100916A80 /* Products */,
 				EFB0E89B2D31456CDD0BA773 /* Pods */,
 				CDBDD8C85ECEF36F2C7AF54A /* Frameworks */,
@@ -126,6 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				DD8FE2FD26B2347100916A80 /* AWSupportLogger.app */,
+				DDFFD287272E1D650091CD6F /* AWSupportLogger_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -134,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				DD84CE3326C5658400E9776F /* MiscFunctions.swift */,
+				DDDCA01F27506BEF00FF50DD /* ValidationService.swift */,
 				DD3918462725C9A70000F6B0 /* ErrorView.swift */,
 				DD84CE3526C565CE00E9776F /* ImagePicker.swift */,
 				DD8FE30026B2347100916A80 /* AWSupportLoggerApp.swift */,
@@ -154,6 +179,14 @@
 				DD8FE30726B2347300916A80 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DDFFD288272E1D650091CD6F /* AWSupportLogger_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DDFFD289272E1D650091CD6F /* AWSupportLogger_Tests.swift */,
+			);
+			path = AWSupportLogger_Tests;
 			sourceTree = "<group>";
 		};
 		EFB0E89B2D31456CDD0BA773 /* Pods */ = {
@@ -187,17 +220,39 @@
 			productReference = DD8FE2FD26B2347100916A80 /* AWSupportLogger.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DDFFD286272E1D650091CD6F /* AWSupportLogger_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDFFD28F272E1D650091CD6F /* Build configuration list for PBXNativeTarget "AWSupportLogger_Tests" */;
+			buildPhases = (
+				DDFFD283272E1D650091CD6F /* Sources */,
+				DDFFD284272E1D650091CD6F /* Frameworks */,
+				DDFFD285272E1D650091CD6F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DDFFD28C272E1D650091CD6F /* PBXTargetDependency */,
+			);
+			name = AWSupportLogger_Tests;
+			productName = AWSupportLogger_Tests;
+			productReference = DDFFD287272E1D650091CD6F /* AWSupportLogger_Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		DD8FE2F526B2347100916A80 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1250;
+				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1250;
 				TargetAttributes = {
 					DD8FE2FC26B2347100916A80 = {
 						CreatedOnToolsVersion = 12.5.1;
+					};
+					DDFFD286272E1D650091CD6F = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = DD8FE2FC26B2347100916A80;
 					};
 				};
 			};
@@ -215,6 +270,7 @@
 			projectRoot = "";
 			targets = (
 				DD8FE2FC26B2347100916A80 /* AWSupportLogger */,
+				DDFFD286272E1D650091CD6F /* AWSupportLogger_Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -227,6 +283,13 @@
 				DD8FE30826B2347300916A80 /* Preview Assets.xcassets in Resources */,
 				DD8FE30526B2347300916A80 /* Assets.xcassets in Resources */,
 				DD8FE31026B3409600916A80 /* GoogleService-Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DDFFD285272E1D650091CD6F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +352,7 @@
 				DD128E7E26CC18080064B47B /* ContentView.swift in Sources */,
 				DD75528626D7154700735158 /* Ticket.swift in Sources */,
 				DD128E8026CC2AAB0064B47B /* SignUpView.swift in Sources */,
+				DDDCA02027506BEF00FF50DD /* ValidationService.swift in Sources */,
 				DD84CE3626C565CE00E9776F /* ImagePicker.swift in Sources */,
 				DD84CE2F26B613E800E9776F /* AppViewModel.swift in Sources */,
 				DDC88E1E26EEC8C90005B827 /* QuoteView.swift in Sources */,
@@ -299,7 +363,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DDFFD283272E1D650091CD6F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDFFD28A272E1D650091CD6F /* AWSupportLogger_Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DDFFD28C272E1D650091CD6F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DD8FE2FC26B2347100916A80 /* AWSupportLogger */;
+			targetProxy = DDFFD28B272E1D650091CD6F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		DD8FE30A26B2347300916A80 /* Debug */ = {
@@ -464,6 +544,74 @@
 			};
 			name = Release;
 		};
+		DDFFD28D272E1D650091CD6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7VMSA5VDUW;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					HEADER_SEARCH_PATHS,
+					"=",
+					"\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"\nHEADER_SEARCH_PATHS",
+					"=",
+					"\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"\nHEADER_SEARCH_PATHS",
+					"=",
+					"\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"\n",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.garynaz.AWSupportLogger-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AWSupportLogger.app/AWSupportLogger";
+			};
+			name = Debug;
+		};
+		DDFFD28E272E1D650091CD6F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7VMSA5VDUW;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					HEADER_SEARCH_PATHS,
+					"=",
+					"\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"\nHEADER_SEARCH_PATHS",
+					"=",
+					"\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"\nHEADER_SEARCH_PATHS",
+					"=",
+					"\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"\n",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.garynaz.AWSupportLogger-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AWSupportLogger.app/AWSupportLogger";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -481,6 +629,15 @@
 			buildConfigurations = (
 				DD8FE30D26B2347300916A80 /* Debug */,
 				DD8FE30E26B2347300916A80 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DDFFD28F272E1D650091CD6F /* Build configuration list for PBXNativeTarget "AWSupportLogger_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDFFD28D272E1D650091CD6F /* Debug */,
+				DDFFD28E272E1D650091CD6F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

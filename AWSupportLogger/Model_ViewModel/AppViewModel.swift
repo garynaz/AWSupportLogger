@@ -22,6 +22,7 @@ class AppViewModel: ObservableObject {
     @Published var signedIn: Bool = false
     @Published var alert = false
     @Published var error = ""
+    @Published var isLoading = false
     
     var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
     var handle: AuthStateDidChangeListenerHandle?
@@ -216,13 +217,18 @@ class AppViewModel: ObservableObject {
     func signIn(email: String, password: String){
         
         if email != "" && password != ""{
+            
+            self.isLoading = true
+            
             authRef.signIn(withEmail: email, password: password) { result, error in
                 guard result != nil, error == nil else {
+                    self.isLoading = false
                     self.error = error!.localizedDescription
                     self.alert.toggle()
                     return
                 }
             }
+            
         } else {
             self.error = "Please fill all the contents properly."
             self.alert.toggle()
@@ -235,24 +241,29 @@ class AppViewModel: ObservableObject {
         
         do {
             try authRef.signOut()
+            self.isLoading = false
         } catch {
             print(error)
         }
     }
     
     func signUp(email: String, password: String, repassword: String, company: String, name: String, admin: Bool, imageURL: URL?){
-        
-        if email != "" || password != "" || repassword != "" || name != "" || company != ""{
+                
+        if email != "" && password != "" && repassword != "" && name != "" && company != ""{
             
             if password == repassword {
+                
+                self.isLoading = true
                 
                 let randomID = UUID.init().uuidString
                 
                 if imageURL != nil {
+                    
                     Storage.storage().reference().child("images/\(randomID).jpg").putFile(from: imageURL!, metadata: nil) { [self] metadata, error in
                         authRef.createUser(withEmail: email, password: password) { result, error in
                             
                             guard result != nil, error == nil else {
+                                self.isLoading = false
                                 self.error = error!.localizedDescription
                                 self.alert.toggle()
                                 return
@@ -267,10 +278,10 @@ class AppViewModel: ObservableObject {
                                 "uid": "\(result!.user.uid)"
                             ]) { error in
                                 if error != nil {
+                                    self.isLoading = false
                                     print(error!)
                                 }
                             }
-                            
                         }
                     }
                 } else {
@@ -281,6 +292,7 @@ class AppViewModel: ObservableObject {
                         authRef.createUser(withEmail: email, password: password) { result, error in
                             
                             guard result != nil, error == nil else {
+                                self.isLoading = false
                                 self.error = error!.localizedDescription
                                 self.alert.toggle()
                                 return
@@ -295,6 +307,7 @@ class AppViewModel: ObservableObject {
                                 "uid": "\(result!.user.uid)"
                             ]) { error in
                                 if error != nil {
+                                    self.isLoading = false
                                     print(error!)
                                 }
                             }

@@ -23,7 +23,7 @@ struct ContentView: View {
                             .transition(.slide)
                     }
                 } else {
-                    //.onAppear method is used for keyboard management (See Misc Functions...)
+                    //.onAppear method is used for keyboard management (See Misc Functions....)
                     SignInView()
                         .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
                         .navigationBarHidden(true)

@@ -37,43 +37,44 @@ struct SupportView: View {
             .offset(y: -20)
             
             VStack {
-                VStack {
-                    Text("Priority")
-                        .font(.system(size: 20, weight: .light, design: .rounded))
-                    Picker(selection: $selectedPriority, label: Text("Priority")) {
-                        ForEach(priorities, id: \.self){
-                            Text("\($0)")
-                        }
-                    }
-                    .padding(.horizontal, 50)
-                    .pickerStyle(SegmentedPickerStyle())
-                    .colorMultiply(Color.blue)
-                }
+                Text("Priority")
+                    .font(.system(size: 20, weight: .light, design: .rounded))
                 
+                Picker(selection: $selectedPriority, label: Text("Priority")) {
+                    ForEach(priorities, id: \.self){
+                        Text("\($0)")
+                    }
+                }
+                .padding(.horizontal, 50)
+                .pickerStyle(SegmentedPickerStyle())
+                .colorMultiply(Color.blue)
                 
                 TextEditor(text: $inquiryText)
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
                     .frame(width: UIScreen.main.bounds.size.width - 50)
                     .frame(maxHeight: .infinity)
-                    .background(RoundedRectangle(cornerRadius: 8).stroke(Color.black.opacity(0.2), lineWidth: 1))
+                    .background(RoundedRectangle(cornerRadius: 8).stroke(Color(UIColor.systemGray2), lineWidth: 1))
                     .onTapGesture {
                         if inquiryText == placeholderString {
                             inquiryText = ""
                         }
                     }
             }
+            
             Button("Submit Ticket") {
                 appViewModel.addTicket(inquiry: inquiryText, priority: selectedPriority, status: "OPEN", type: "Support")
                 self.presentation.wrappedValue.dismiss()
             }
             .frame(width: UIScreen.main.bounds.size.width - 50, height: 70, alignment: .center)
             .font(.title2)
-            .background(Color.gray)
+            .background(Color(UIColor.systemGray2))
             .cornerRadius(15)
-            .opacity(0.5)
             
             Spacer()
+        }
+        .onAppear(){
+            UITextView.appearance().backgroundColor = .clear
         }
     }
     

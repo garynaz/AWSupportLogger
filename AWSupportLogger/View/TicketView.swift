@@ -18,7 +18,7 @@ struct TicketView: View {
             if emptyView{
                 Text("No Active Tickets")
                     .opacity(0.5)
-                    .foregroundColor(.gray)
+                    .foregroundColor(Color(UIColor.systemGray2))
                     .font(.system(size: 30, weight: .semibold, design: .default))
                     .offset(y: -50)
             } else{

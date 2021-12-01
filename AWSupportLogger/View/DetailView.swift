@@ -69,7 +69,7 @@ struct DetailView: View {
             
             if noMsg == true {
                 Text("Chat With IT Support!")
-                    .foregroundColor(Color.black.opacity(0.5))
+                    .foregroundColor(Color(UIColor.systemGray2))
                     .padding(.top)
                 Spacer()
             }

@@ -77,7 +77,7 @@ struct SignUpView: View {
                     Group {
                         TextField("Company", text: $company)
                             .padding()
-                            .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                            .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 2))
                             .disableAutocorrection(true)
                             .autocapitalization(.none)
                             .padding(.bottom)
@@ -89,7 +89,7 @@ struct SignUpView: View {
                         
                         TextField("First and Last Name", text: $name)
                             .padding()
-                            .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                            .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 2))
                             .disableAutocorrection(true)
                             .autocapitalization(.none)
                             .padding(.bottom)
@@ -101,7 +101,7 @@ struct SignUpView: View {
                         
                         TextField("Email", text: $email)
                             .padding()
-                            .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                            .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 2))
                             .disableAutocorrection(true)
                             .autocapitalization(.none)
                             .padding(.bottom)
@@ -113,7 +113,7 @@ struct SignUpView: View {
                         
                         SecureField("Password", text: $password)
                             .padding()
-                            .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                            .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 2))
                             .disableAutocorrection(true)
                             .autocapitalization(.none)
                             .padding(.bottom)
@@ -125,7 +125,7 @@ struct SignUpView: View {
                         
                         SecureField("Password", text: $repassword)
                             .padding()
-                            .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                            .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 2))
                             .disableAutocorrection(true)
                             .autocapitalization(.none)
                             .onChange(of: self.repassword, perform: { value in
@@ -140,7 +140,7 @@ struct SignUpView: View {
                     HStack{
                         HStack{
                             Text("ADMIN")
-                                .foregroundColor(admin ? .green : .gray)
+                                .foregroundColor(admin ? Color(UIColor.systemGreen) : Color(UIColor.systemGray2))
                             Toggle("", isOn: $admin)
                                 .labelsHidden()
                         }
@@ -148,7 +148,7 @@ struct SignUpView: View {
                         .overlay(
                             RoundedRectangle(cornerRadius: 15)
                                 .stroke(lineWidth: 2)
-                                .foregroundColor(admin ? .green : .gray)
+                                .foregroundColor(admin ? Color(UIColor.systemGreen) : Color(UIColor.systemGray2))
                         )
                         
                     }

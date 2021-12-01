@@ -53,7 +53,7 @@ struct QuoteView: View {
                     .autocapitalization(.none)
                     .frame(width: UIScreen.main.bounds.size.width - 50)
                     .frame(maxHeight: .infinity)
-                    .background(RoundedRectangle(cornerRadius: 8).stroke(Color.black.opacity(0.2), lineWidth: 1))
+                    .background(RoundedRectangle(cornerRadius: 8).stroke(Color(UIColor.systemGray2), lineWidth: 1))
                     .onTapGesture {
                         if inquiryText == placeholderString {
                             inquiryText = ""
@@ -67,9 +67,8 @@ struct QuoteView: View {
             }
             .frame(width: UIScreen.main.bounds.size.width - 50, height: 70, alignment: .center)
             .font(.title2)
-            .background(Color.gray)
+            .background(Color(UIColor.systemGray2))
             .cornerRadius(15)
-            .opacity(0.5)
             
             Spacer()
         }

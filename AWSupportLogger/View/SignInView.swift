@@ -42,7 +42,7 @@ struct SignInView: View {
                     
                     TextField("Email", text: $username)
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                        .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 2))
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .onChange(of: self.username, perform: { value in
@@ -51,6 +51,7 @@ struct SignInView: View {
                             }
                         })
                         .padding(.bottom)
+                        
                     
                     HStack(spacing: 15){
                         VStack{
@@ -82,7 +83,7 @@ struct SignInView: View {
                         }
                     }
                     .padding()
-                    .background(RoundedRectangle(cornerRadius: 4).stroke(Color.black.opacity(0.5), lineWidth: 2))
+                    .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 2))
                     
                     
                     //SignIn Button

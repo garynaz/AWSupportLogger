@@ -20,6 +20,10 @@ struct SignInView: View {
     var body: some View {
         
         ZStack{
+            Color
+                .themeBackground
+                .ignoresSafeArea()
+            
             if viewModel.isLoading == true {
                 VStack{
                     ProgressView()
@@ -42,7 +46,7 @@ struct SignInView: View {
                     
                     TextField("Email", text: $username)
                         .padding()
-                        .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 2))
+                        .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 1))
                         .disableAutocorrection(true)
                         .autocapitalization(.none)
                         .onChange(of: self.username, perform: { value in
@@ -83,7 +87,7 @@ struct SignInView: View {
                         }
                     }
                     .padding()
-                    .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 2))
+                    .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 1))
                     
                     
                     //SignIn Button
@@ -92,8 +96,9 @@ struct SignInView: View {
                     }, label: {
                         Text("Sign In")
                             .frame(width: 300, height: 50)
-                            .background(Color.green)
-                            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                            .foregroundColor(Color.themeBackground)
+                            .background(Color.themeAccent)
+                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                             .padding()
                     })
                     
@@ -101,8 +106,9 @@ struct SignInView: View {
                     //SignUp Button
                     NavigationLink("Create Account", destination: SignUpView())
                         .frame(width: 300, height: 50)
-                        .background(Color.orange)
-                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                        .foregroundColor(Color.themeBackground)
+                        .background(Color.themeAccent)
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     
                 }
                 .padding(.horizontal, 25)
@@ -114,6 +120,7 @@ struct SignInView: View {
             }
             .blur(radius: viewModel.isLoading ? 5 : 0)
         }
+        
     }
     
 }

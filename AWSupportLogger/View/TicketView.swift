@@ -30,7 +30,7 @@ struct TicketView: View {
                             }
                     }
                     .onDelete(perform: deleteTicket)
-        //            .animation(.default, value: nil) //This functionality only works on List View. Doesn't work with ScrollView.
+                    .listRowBackground(Color.themeBackground)
                 }
                 .toolbar{
                     EditButton()
@@ -44,7 +44,6 @@ struct TicketView: View {
         }
         
     }
-    
     
     
     func deleteTicket(at offsets: IndexSet){

@@ -16,27 +16,22 @@ struct MainView: View {
 
         VStack{
             Spacer()
-            VStack(spacing: 50){
+            VStack(spacing: 40){
                 
                 NavigationLink(destination: SupportView()){
-                    awButton(content: "Request Support", backColor: Color(#colorLiteral(red: 0, green: 0.723585546, blue: 0.9907287955, alpha: 1)))
-                        .shadow(color: Color.primary.opacity(0.5), radius: 20, x: 0, y: 20)
-                        .rotation3DEffect(Angle(degrees:10), axis: (x: 10.0, y: 0, z: 0))
+                    awButton(content: "Request Support", backColor: Color.themeSecondary)
                 }
 
                 NavigationLink(destination: QuoteView()){
-                    awButton(content: "Request Quote", backColor: Color(#colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)))
-                        .shadow(color: Color.primary.opacity(0.5), radius: 20, x: 0, y: 20)
-                        .rotation3DEffect(Angle(degrees:10), axis: (x: 10.0, y: 0, z: 0))
+                    awButton(content: "Request Quote", backColor: Color.orange)
                 }
 
                 NavigationLink(destination: TicketView()){
-                    awButton(content: "Ticket Status", backColor: Color(#colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)))
-                        .shadow(color: Color.primary.opacity(0.5), radius: 20, x: 0, y: 20)
-                        .rotation3DEffect(Angle(degrees:10), axis: (x: 10.0, y: 0, z: 0))
+                    awButton(content: "Ticket Status", backColor: Color.green)
                 }
             }
             Spacer()
+
         }
         .onAppear(perform: {
             appViewModel.isLoading = false
@@ -88,16 +83,16 @@ struct awButton: View {
                 Spacer()
             }
             .padding(.top)
-            HStack {
+            ZStack {
                 Text("\(content)")
-                    .font(.title)
+                    .font(.largeTitle)
                     .fontWeight(.semibold)
-                    .offset(y: 10.0)
+                    .offset(y: 30.0)
             }
             Spacer()
         }
-        .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
-        .frame(width: 300, height: 150, alignment: .center)
+        .foregroundColor(Color.white)
+        .frame(width: 350, height: 200, alignment: .center)
         .background(backColor)
         .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
     }

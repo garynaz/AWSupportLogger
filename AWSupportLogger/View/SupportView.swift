@@ -26,7 +26,7 @@ struct SupportView: View {
             
             VStack {
                 Text(appViewModel.userInfo!.name)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.themeAccent)
                     .font(.system(size: 20, weight: .medium, design: .rounded))
                 Image(uiImage: appViewModel.photoImage!)
                     .resizable()
@@ -47,7 +47,7 @@ struct SupportView: View {
                 }
                 .padding(.horizontal, 50)
                 .pickerStyle(SegmentedPickerStyle())
-                .colorMultiply(Color.blue)
+                .colorMultiply(Color.themeAccent)
                 
                 TextEditor(text: $inquiryText)
                     .disableAutocorrection(true)
@@ -68,8 +68,9 @@ struct SupportView: View {
             }
             .frame(width: UIScreen.main.bounds.size.width - 50, height: 70, alignment: .center)
             .font(.title2)
-            .background(Color(UIColor.systemGray2))
-            .cornerRadius(15)
+            .foregroundColor(Color.themeBackground)
+            .background(Color.themeAccent)
+            .cornerRadius(10)
             
             Spacer()
         }

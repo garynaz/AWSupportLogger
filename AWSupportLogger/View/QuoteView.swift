@@ -25,7 +25,7 @@ struct QuoteView: View {
             
             VStack {
                 Text(appViewModel.userInfo!.name)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.orange)
                     .font(.system(size: 20, weight: .medium, design: .default))
                 Image(uiImage: appViewModel.photoImage!)
                     .resizable()
@@ -46,7 +46,7 @@ struct QuoteView: View {
                 }
                 .padding(.horizontal, 50)
                 .pickerStyle(SegmentedPickerStyle())
-                .colorMultiply(Color.blue)
+                .colorMultiply(Color.orange)
                 
                 TextEditor(text: $inquiryText)
                     .disableAutocorrection(true)
@@ -67,8 +67,9 @@ struct QuoteView: View {
             }
             .frame(width: UIScreen.main.bounds.size.width - 50, height: 70, alignment: .center)
             .font(.title2)
-            .background(Color(UIColor.systemGray2))
-            .cornerRadius(15)
+            .foregroundColor(Color.themeBackground)
+            .background(Color.orange)
+            .cornerRadius(10)
             
             Spacer()
         }

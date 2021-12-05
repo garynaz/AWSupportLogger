@@ -28,7 +28,7 @@
 		DDC88E1E26EEC8C90005B827 /* QuoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC88E1D26EEC8C90005B827 /* QuoteView.swift */; };
 		DDC88E2026F6BCD30005B827 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC88E1F26F6BCD30005B827 /* DetailView.swift */; };
 		DDC88E2226F7BE1D0005B827 /* AdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC88E2126F7BE1D0005B827 /* AdminView.swift */; };
-		DDDCA02027506BEF00FF50DD /* ValidationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDCA01F27506BEF00FF50DD /* ValidationService.swift */; };
+		DDE6E364275725B8003AD2C0 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDE6E363275725B8003AD2C0 /* ColorExtension.swift */; };
 		DDFFD28A272E1D650091CD6F /* AWSupportLogger_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFFD289272E1D650091CD6F /* AWSupportLogger_Tests.swift */; };
 /* End PBXBuildFile section */
 
@@ -68,7 +68,7 @@
 		DDC88E1D26EEC8C90005B827 /* QuoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteView.swift; sourceTree = "<group>"; };
 		DDC88E1F26F6BCD30005B827 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		DDC88E2126F7BE1D0005B827 /* AdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AdminView.swift; path = "/Users/owner1/Desktop/Practice Projects/AWSupportLogger/AWSupportLogger/View/AdminView.swift"; sourceTree = "<absolute>"; };
-		DDDCA01F27506BEF00FF50DD /* ValidationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationService.swift; sourceTree = "<group>"; };
+		DDE6E363275725B8003AD2C0 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ColorExtension.swift; path = "/Users/owner1/Desktop/Practice Projects/AWSupportLogger/AWSupportLogger/Resources/ColorExtension.swift"; sourceTree = "<absolute>"; };
 		DDFFD287272E1D650091CD6F /* AWSupportLogger_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AWSupportLogger_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDFFD289272E1D650091CD6F /* AWSupportLogger_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AWSupportLogger_Tests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -121,6 +121,7 @@
 		DD84CE3026B61F9400E9776F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DD3918462725C9A70000F6B0 /* ErrorView.swift */,
 				DD128E7D26CC18080064B47B /* ContentView.swift */,
 				DD84CE3126B61FA800E9776F /* SignInView.swift */,
 				DD128E7F26CC2AAB0064B47B /* SignUpView.swift */,
@@ -157,11 +158,7 @@
 		DD8FE2FF26B2347100916A80 /* AWSupportLogger */ = {
 			isa = PBXGroup;
 			children = (
-				DD84CE3326C5658400E9776F /* MiscFunctions.swift */,
-				DDDCA01F27506BEF00FF50DD /* ValidationService.swift */,
-				DD3918462725C9A70000F6B0 /* ErrorView.swift */,
-				DD84CE3526C565CE00E9776F /* ImagePicker.swift */,
-				DD8FE30026B2347100916A80 /* AWSupportLoggerApp.swift */,
+				DDE6E36227572568003AD2C0 /* Resources */,
 				DD84CE3026B61F9400E9776F /* View */,
 				DD75528726D8027600735158 /* Model */,
 				DD84CE2B26B6138800E9776F /* Model_ViewModel */,
@@ -179,6 +176,17 @@
 				DD8FE30726B2347300916A80 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DDE6E36227572568003AD2C0 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DD8FE30026B2347100916A80 /* AWSupportLoggerApp.swift */,
+				DDE6E363275725B8003AD2C0 /* ColorExtension.swift */,
+				DD84CE3526C565CE00E9776F /* ImagePicker.swift */,
+				DD84CE3326C5658400E9776F /* MiscFunctions.swift */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		DDFFD288272E1D650091CD6F /* AWSupportLogger_Tests */ = {
@@ -345,6 +353,7 @@
 				DDC88E1A26EEC83A0005B827 /* SupportView.swift in Sources */,
 				DDC88E1C26EEC8A00005B827 /* TicketView.swift in Sources */,
 				DD75528D26DA9CB000735158 /* MainView.swift in Sources */,
+				DDE6E364275725B8003AD2C0 /* ColorExtension.swift in Sources */,
 				DD84CE3226B61FA800E9776F /* SignInView.swift in Sources */,
 				DD3918472725C9A70000F6B0 /* ErrorView.swift in Sources */,
 				DD75528426D7153E00735158 /* User.swift in Sources */,
@@ -352,7 +361,6 @@
 				DD128E7E26CC18080064B47B /* ContentView.swift in Sources */,
 				DD75528626D7154700735158 /* Ticket.swift in Sources */,
 				DD128E8026CC2AAB0064B47B /* SignUpView.swift in Sources */,
-				DDDCA02027506BEF00FF50DD /* ValidationService.swift in Sources */,
 				DD84CE3626C565CE00E9776F /* ImagePicker.swift in Sources */,
 				DD84CE2F26B613E800E9776F /* AppViewModel.swift in Sources */,
 				DDC88E1E26EEC8C90005B827 /* QuoteView.swift in Sources */,
@@ -502,8 +510,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = ACBEEC30EEE807FD19EF87D5 /* Pods-AWSupportLogger.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AWSupportLogger/Preview Content\"";
 				DEVELOPMENT_TEAM = 7VMSA5VDUW;
@@ -525,8 +533,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2D4B471D7167F2C5850706F8 /* Pods-AWSupportLogger.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"AWSupportLogger/Preview Content\"";
 				DEVELOPMENT_TEAM = 7VMSA5VDUW;

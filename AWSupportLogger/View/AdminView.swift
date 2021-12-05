@@ -53,6 +53,7 @@ struct AdminView: View {
                 }
             }
             .onDelete(perform: deleteTicket)
+            .listRowBackground(Color.themeBackground)
         }
         .navigationBarBackButtonHidden(true)
         .navigationTitle("ADMIN")

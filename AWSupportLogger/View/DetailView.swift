@@ -13,6 +13,7 @@ struct DetailView: View {
     @EnvironmentObject private var appViewModel: AppViewModel
     @State var msgTxt = ""
     @State var noMsg = true
+    @State var restorePlaceholder = false
     
     var selectedTicket: Ticket!
     
@@ -112,13 +113,17 @@ struct DetailView: View {
             }
             
             HStack{
-                TextField("Enter Message", text: self.$msgTxt)
+                TextField("Enter Message" + (restorePlaceholder ? "" : " "), text: self.$msgTxt)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .disableAutocorrection(true)
                     .autocapitalization(.none)
+                    
                 
                 Button(action: {
                     appViewModel.sendMsg(message: self.msgTxt, stamp: Timestamp(date: Date()), ticketId: selectedTicket.ticketId, userId: appViewModel.userIdRef)
+                    
+                    self.msgTxt = ""
+                    self.restorePlaceholder.toggle()
                 }){
                     Text("Send")
                 }

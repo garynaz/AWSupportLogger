@@ -11,6 +11,7 @@ import Firebase
 
 struct MainView: View {
     @EnvironmentObject private var appViewModel: AppViewModel
+    @State var showUpdate = false
 
     var body: some View {
 
@@ -47,8 +48,14 @@ struct MainView: View {
                 Text("Sign Out")
             }
         },trailing: HStack{
-            Image(systemName: "bell")
+            Image(systemName: appViewModel.updateIcon)
                 .font(.system(size: 30))
+                .onTapGesture {
+                    showUpdate = true
+                }
+                .sheet(isPresented: $showUpdate) {
+                    UpdateView()
+                }
             Image(uiImage: appViewModel.photoImage!)
                 .resizable()
                 .scaledToFit()
@@ -57,7 +64,10 @@ struct MainView: View {
             Text(appViewModel.userInfo!.name)
                 .font(.system(size: 20))
         })
+        
+        
     }
+    
 }
 
 

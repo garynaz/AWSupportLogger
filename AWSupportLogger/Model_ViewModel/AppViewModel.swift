@@ -23,6 +23,7 @@ class AppViewModel: ObservableObject {
     @Published var alert = false
     @Published var error = ""
     @Published var isLoading = false
+    @Published var updateIcon = "bell"
     
     var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
     var handle: AuthStateDidChangeListenerHandle?
@@ -49,10 +50,10 @@ class AppViewModel: ObservableObject {
                 return
             }
 
-            snapshot.documentChanges.forEach { diff in
+            snapshot.documentChanges.forEach { [weak self] diff in
 
                 if (diff.type == .added) {
-                    self.allMessagesArray.removeAll()
+                    self?.allMessagesArray.removeAll()
                     for message in querySnapshot!.documents{
                         let msgData = message.data()
                         let message = msgData["message"] as! String
@@ -67,7 +68,7 @@ class AppViewModel: ObservableObject {
                         formatter.dateFormat = "hh:mm a"
                         let time = formatter.string(from: stamp.dateValue())
 
-                        self.allMessagesArray.append(Message(userId: userId, lastMsg: message, time: time, date: date, stamp: stamp.dateValue(), ticketId: ticketId))
+                        self?.allMessagesArray.append(Message(userId: userId, lastMsg: message, time: time, date: date, stamp: stamp.dateValue(), ticketId: ticketId))
                     }
 
                 }
@@ -77,7 +78,7 @@ class AppViewModel: ObservableObject {
     
     
     func fetchUserData(completion: @escaping () -> Void){
-        db.collection("Users").document("\(userIdRef)").getDocument { document, error in
+        db.collection("Users").document("\(userIdRef)").getDocument { [weak self] document, error in
             // Check for error
             if let error = error{
                 print("Got an error fetching User Data: \(error.localizedDescription)")
@@ -86,7 +87,7 @@ class AppViewModel: ObservableObject {
                 // Check that this document exists
                 if document != nil && document!.exists {
                     
-                    self.userInfo = document.map { (documentSnapshot) -> User in
+                    self?.userInfo = document.map { (documentSnapshot) -> User in
                         let data = documentSnapshot.data()
                         
                         let company = data?["company"] as? String ?? ""
@@ -95,7 +96,7 @@ class AppViewModel: ObservableObject {
                         let photoRef = data?["photo"] as? String ?? ""
                         let uid = data?["uid"] as? String ?? ""
                         
-                        self.downloadImageTask = Storage.storage().reference(withPath: photoRef)
+                        self?.downloadImageTask = Storage.storage().reference(withPath: photoRef)
                         return User(uid: uid, company: company, name: name, admin: admin, photoRef: photoRef, photoImage: nil)
                     }
                     completion()
@@ -113,9 +114,9 @@ class AppViewModel: ObservableObject {
                 return
             }
             
-            snapshot.documentChanges.forEach { diff in
+            snapshot.documentChanges.forEach { [weak self] diff in
                 if (diff.type == .added) {
-                    self.allTicketsArray.removeAll()
+                    self?.allTicketsArray.removeAll()
                     
                     for ticket in querySnapshot!.documents{
                         let ticketData = ticket.data()
@@ -125,9 +126,11 @@ class AppViewModel: ObservableObject {
                         let inquiry = ticketData["inquiry"] as! String
                         let priority = ticketData["priority"] as! String
                         let userId = ticketData["userId"] as! String
-                        
-                        let newTicket = Ticket(date: date, inquiry: inquiry, priority: priority, status: status, type: type, userId: userId, key: ticket.reference, ticketId: ticket.documentID)
-                        self.allTicketsArray.append(newTicket)
+                        let company = ticketData["company"] as! String
+                        let name = ticketData["name"] as! String
+
+                        let newTicket = Ticket(date: date, inquiry: inquiry, priority: priority, status: status, type: type, userId: userId, key: ticket.reference, ticketId: ticket.documentID, company: company, name: name)
+                        self?.allTicketsArray.append(newTicket)
                     }
                     
                 }
@@ -144,9 +147,9 @@ class AppViewModel: ObservableObject {
                 return
             }
             
-            snapshot.documentChanges.forEach { diff in
+            snapshot.documentChanges.forEach { [weak self] diff in
                 if (diff.type == .added) {
-                    self.userTicketsArray.removeAll()
+                    self?.userTicketsArray.removeAll()
                     
                     for ticket in querySnapshot!.documents{
                         let ticketData = ticket.data()
@@ -156,9 +159,11 @@ class AppViewModel: ObservableObject {
                         let inquiry = ticketData["inquiry"] as! String
                         let priority = ticketData["priority"] as! String
                         let userId = ticketData["userId"] as! String
+                        let company = ticketData["company"] as! String
+                        let name = ticketData["name"] as! String
                         
-                        let newTicket = Ticket(date: date, inquiry: inquiry, priority: priority, status: status, type: type, userId: userId, key: ticket.reference, ticketId: ticket.documentID)
-                        self.userTicketsArray.append(newTicket)
+                        let newTicket = Ticket(date: date, inquiry: inquiry, priority: priority, status: status, type: type, userId: userId, key: ticket.reference, ticketId: ticket.documentID, company: company, name: name)
+                        self?.userTicketsArray.append(newTicket)
                     }
                     
                 }
@@ -167,22 +172,22 @@ class AppViewModel: ObservableObject {
     }
     
     func downloadImageData(){
-        downloadImageTask?.getData(maxSize: 6 * 1024 * 1024, completion: { data, error in
+        downloadImageTask?.getData(maxSize: 6 * 1024 * 1024, completion: { [weak self] data, error in
             if let error = error {
                 print("Got an error Download Image data: \(error.localizedDescription)")
                 return
             } else {
-                self.photoImage = UIImage(data: data!)
+                self?.photoImage = UIImage(data: data!)
                 DispatchQueue.main.async {
                     withAnimation {
                         
                         //Fixes issue with fetching object and re-triggering fetch request after SignOut.
-                        guard self.signedOutTapped != true else {
-                            self.signedOutTapped = false
+                        guard self?.signedOutTapped != true else {
+                            self?.signedOutTapped = false
                             return
                         }
                         
-                        self.signedIn = true
+                        self?.signedIn = true
                     }
                 }
             }
@@ -191,25 +196,25 @@ class AppViewModel: ObservableObject {
     
     func listen(){
         print("Listener is triggered")
-        handle = authRef.addStateDidChangeListener({ auth, user in
+        handle = authRef.addStateDidChangeListener( { [weak self] auth, user in
             if let user = auth.currentUser {
-                self.userIdRef = user.uid
-                self.rootInfoCollection = Firestore.firestore().collection("/Users/")
-                self.rootTicketCollection = Firestore.firestore().collection("/Ticket/")
-                self.rootMessageCollection = Firestore.firestore().collection("/Messages/")
-                self.fetchUserData{
-                     if self.userInfo?.admin == false{
-                        self.fetchTicketsData()
-                        self.fetchAllMessageData()
-                        self.downloadImageData()
+                self?.userIdRef = user.uid
+                self?.rootInfoCollection = Firestore.firestore().collection("/Users/")
+                self?.rootTicketCollection = Firestore.firestore().collection("/Ticket/")
+                self?.rootMessageCollection = Firestore.firestore().collection("/Messages/")
+                self?.fetchUserData{
+                     if self?.userInfo?.admin == false{
+                        self?.fetchTicketsData()
+                        self?.fetchAllMessageData()
+                        self?.downloadImageData()
                     } else {
-                        self.fetchAllTicketData()
-                        self.fetchAllMessageData()
-                        self.downloadImageData()
+                        self?.fetchAllTicketData()
+                        self?.fetchAllMessageData()
+                        self?.downloadImageData()
                     }
                 }
             } else {
-                self.signedIn = false
+                self?.signedIn = false
             }
         })
     }
@@ -220,11 +225,11 @@ class AppViewModel: ObservableObject {
             
             self.isLoading = true
             
-            authRef.signIn(withEmail: email, password: password) { result, error in
+            authRef.signIn(withEmail: email, password: password) { [weak self] result, error in
                 guard result != nil, error == nil else {
-                    self.isLoading = false
-                    self.error = error!.localizedDescription
-                    self.alert.toggle()
+                    self?.isLoading = false
+                    self?.error = error!.localizedDescription
+                    self?.alert.toggle()
                     return
                 }
             }
@@ -259,26 +264,26 @@ class AppViewModel: ObservableObject {
                 
                 if imageURL != nil {
                     
-                    Storage.storage().reference().child("images/\(randomID).jpg").putFile(from: imageURL!, metadata: nil) { [self] metadata, error in
-                        authRef.createUser(withEmail: email, password: password) { result, error in
+                    Storage.storage().reference().child("images/\(randomID).jpg").putFile(from: imageURL!, metadata: nil) { [weak self] metadata, error in
+                        self?.authRef.createUser(withEmail: email, password: password) { result, error in
                             
                             guard result != nil, error == nil else {
-                                self.isLoading = false
-                                self.error = error!.localizedDescription
-                                self.alert.toggle()
+                                self?.isLoading = false
+                                self?.error = error!.localizedDescription
+                                self?.alert.toggle()
                                 return
                             }
                             
                             //Success
-                            self.db.collection("Users").document("\(result!.user.uid)").setData([
+                            self?.db.collection("Users").document("\(result!.user.uid)").setData([
                                 "company" : "\(company)",
                                 "name" : "\(name)",
                                 "admin" : admin,
                                 "photo" : "images/\(randomID).jpg",
                                 "uid": "\(result!.user.uid)"
-                            ]) { error in
+                            ]) { [weak self] error in
                                 if error != nil {
-                                    self.isLoading = false
+                                    self?.isLoading = false
                                     print(error!)
                                 }
                             }
@@ -288,26 +293,27 @@ class AppViewModel: ObservableObject {
                     
                     let defaultUserImage = UIImage(systemName: "person.circle")?.pngData()
                     
-                    Storage.storage().reference().child("images/\(randomID).jpg").putData((defaultUserImage)!, metadata: nil) { [self] metadata, error in
-                        authRef.createUser(withEmail: email, password: password) { result, error in
+                    Storage.storage().reference().child("images/\(randomID).jpg").putData((defaultUserImage)!, metadata: nil) { [weak self] metadata, error in
+                        
+                        self?.authRef.createUser(withEmail: email, password: password) { [weak self] result, error in
                             
                             guard result != nil, error == nil else {
-                                self.isLoading = false
-                                self.error = error!.localizedDescription
-                                self.alert.toggle()
+                                self?.isLoading = false
+                                self?.error = error!.localizedDescription
+                                self?.alert.toggle()
                                 return
                             }
                             
                             //Success
-                            self.db.collection("Users").document("\(result!.user.uid)").setData([
+                            self?.db.collection("Users").document("\(result!.user.uid)").setData([
                                 "company" : "\(company)",
                                 "name" : "\(name)",
                                 "admin" : admin,
                                 "photo" : "images/\(randomID).jpg",
                                 "uid": "\(result!.user.uid)"
-                            ]) { error in
+                            ]) { [weak self] error in
                                 if error != nil {
-                                    self.isLoading = false
+                                    self?.isLoading = false
                                     print(error!)
                                 }
                             }
@@ -354,7 +360,9 @@ class AppViewModel: ObservableObject {
             "priority" : "\(priority)",
             "status": "\(status)",
             "type": "\(type)",
-            "userId": "\(self.userInfo!.uid)"
+            "userId": "\(self.userInfo!.uid)",
+            "company": "\(self.userInfo!.company)",
+            "name": "\(self.userInfo!.name)"
         ], completion: { error in
             if error != nil {
                 print(error!.localizedDescription)

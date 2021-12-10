@@ -24,9 +24,10 @@ struct AdminView: View {
                                     .frame(maxWidth: .infinity)
                                     .padding(.bottom)
                                     .font(.system(size: 20, weight: .semibold))
+                                    
                                 
                                 HStack(alignment: .center) {
-                                    Text(appViewModel.userInfo!.company)
+                                    Text(ticket.company)
                                         .font(.system(size: 20, weight: .bold))
                                     Spacer()
                                     Text("\(ticket.status)")
@@ -42,7 +43,7 @@ struct AdminView: View {
                                     .foregroundColor(.secondary)
                                 Spacer()
                                 Spacer()
-                                Text("Submitted By: \(appViewModel.userInfo!.name)")
+                                Text("Submitted By: \(ticket.name)")
                                     .font(.system(size: 15, weight: .light))
                                     .padding(.bottom, 5)
                                 Text("\(ticket.inquiry)")

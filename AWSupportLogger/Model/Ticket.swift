@@ -18,9 +18,12 @@ struct Ticket: Identifiable {
     var userId: String
     var key: DocumentReference!
     var ticketId: String
+    var company: String
+    var name: String
     
     
-    init(date: String, inquiry: String, priority: String, status: String, type: String, userId: String, key: DocumentReference, ticketId: String) {
+    
+    init(date: String, inquiry: String, priority: String, status: String, type: String, userId: String, key: DocumentReference, ticketId: String, company: String, name: String) {
         self.date = date
         self.inquiry = inquiry
         self.priority = priority
@@ -29,5 +32,7 @@ struct Ticket: Identifiable {
         self.userId = userId
         self.key = key
         self.ticketId = ticketId
+        self.company = company
+        self.name = name
     }
 }

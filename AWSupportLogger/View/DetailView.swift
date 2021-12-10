@@ -33,7 +33,7 @@ struct DetailView: View {
                 
                 HStack {
                     HStack {
-                        Text(appViewModel.userInfo!.name)
+                        Text(selectedTicket.name)
                             .font(.system(size: 20, weight: .light))
                             .padding()
                     }
@@ -64,7 +64,7 @@ struct DetailView: View {
                 
             }
             .padding()
-            .navigationBarTitle(appViewModel.userInfo!.company, displayMode: .inline)
+            .navigationBarTitle(selectedTicket.company, displayMode: .inline)
             .listStyle(PlainListStyle())
             
             
@@ -124,6 +124,7 @@ struct DetailView: View {
                     
                     self.msgTxt = ""
                     self.restorePlaceholder.toggle()
+                    
                 }){
                     Text("Send")
                 }

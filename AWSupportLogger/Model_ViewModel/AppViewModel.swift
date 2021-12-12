@@ -388,7 +388,7 @@ class AppViewModel: ObservableObject {
                         self?.rootMessageCollection!.document(message.documentID).delete()
                     }
                 }
-                                
+                
                 self?.rootTicketCollection!.document(selectedTicket.documentID).delete()
                 self?.userTicketsArray.remove(at: offset)
             }
@@ -409,6 +409,21 @@ class AppViewModel: ObservableObject {
             }
         }
         
+    }
+    
+    func updateTicketStatus(status: String, reference: DocumentReference, completion: @escaping () -> Void){
+        let ticketRef = rootTicketCollection?.document(reference.documentID)
+        
+        ticketRef!.updateData([
+            "status": status
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+                completion()
+            }
+        }
     }
     
 }

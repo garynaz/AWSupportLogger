@@ -24,18 +24,51 @@ struct AdminView: View {
                                     .frame(maxWidth: .infinity)
                                     .padding(.bottom)
                                     .font(.system(size: 20, weight: .semibold))
-                                    
+                                
                                 
                                 HStack(alignment: .center) {
                                     Text(ticket.company)
                                         .font(.system(size: 20, weight: .bold))
                                     Spacer()
-                                    Text("\(ticket.status)")
-                                        .padding()
-                                        .minimumScaleFactor(0.5)
-                                        .background(Color.green)
-                                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                                        .lineLimit(1)
+                                    
+                                    Menu {
+                                        Button {
+                                            appViewModel.updateTicketStatus(status: "OPEN", reference: ticket.key, completion: {
+                                                appViewModel.fetchAllTicketData()
+                                            })
+                                        } label: {
+                                            Text("OPEN")
+                                        }
+                                        Button {
+                                            appViewModel.updateTicketStatus(status: "CLOSED", reference: ticket.key, completion: {
+                                                appViewModel.fetchAllTicketData()
+                                            })
+                                        } label: {
+                                            Text("CLOSED")
+                                        }
+                                        Button {
+                                            appViewModel.updateTicketStatus(status: "IN-PROGRESS", reference: ticket.key, completion: {
+                                                appViewModel.fetchAllTicketData()
+                                            })
+                                        } label: {
+                                            Text("IN-PROGRESS")
+                                        }
+                                        Button {
+                                            appViewModel.updateTicketStatus(status: "UNFINISHED", reference: ticket.key, completion: {
+                                                appViewModel.fetchAllTicketData()
+                                            })
+                                        } label: {
+                                            Text("UNFINISHED")
+                                        }
+                                    } label: {
+                                        Text(ticket.status)
+                                    }
+                                    .padding()
+                                    .minimumScaleFactor(0.5)
+                                    .background(Color.green)
+                                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                                    .lineLimit(1)
+                                    
                                 }
                                 Text("\(ticket.date)")
                                     .font(.caption)

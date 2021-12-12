@@ -29,7 +29,7 @@ struct TicketView: View {
                                 ticketRow(ticket: ticket)
                             }
                     }
-                    .onDelete(perform: deleteTicket)
+                    .onDelete(perform: appViewModel.deleteTicket)
                     .listRowBackground(Color.themeBackground)
                 }
                 .toolbar{
@@ -44,30 +44,6 @@ struct TicketView: View {
         }
         
     }
-    
-    
-    func deleteTicket(at offsets: IndexSet){
-        for offset in offsets {
-            let selectedTicket = appViewModel.userTicketsArray[offset].key!
-            
-            DispatchQueue.main.async {
-                //Deletes all Ticket Messages when deleting Ticket...
-                appViewModel.rootMessageCollection!.document(appViewModel.userIdRef).collection("Message").whereField("ticketId", isEqualTo: selectedTicket.documentID).addSnapshotListener { (querySnapshot, err) in
-                    
-                    guard let snapshot = querySnapshot else {return}
-                    
-                    for message in snapshot.documents{
-                        print("Deleting Message: \(message.data())")
-                        appViewModel.rootMessageCollection!.document(appViewModel.userIdRef).collection("Message").document(message.documentID).delete()
-                    }
-                }
-                
-                appViewModel.rootTicketCollection!.document(selectedTicket.documentID).delete()
-                appViewModel.userTicketsArray.remove(at: offset)
-            }
-        }
-    }
-    
     
 }
 

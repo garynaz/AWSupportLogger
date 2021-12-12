@@ -10,6 +10,7 @@ import SwiftUI
 struct UpdateView: View {
     
     @EnvironmentObject private var appViewModel: AppViewModel
+    @Environment(\.presentationMode) var presentation //Tells the view to dismiss itself using its presentation mode environment key.
     @State var emptyView = true
     
     var body: some View {
@@ -21,6 +22,10 @@ struct UpdateView: View {
                     .foregroundColor(Color(UIColor.systemGray2))
                     .font(.system(size: 30, weight: .semibold, design: .default))
                     .offset(y: -50)
+                Button("Clear All Notifications"){
+                    appViewModel.updateIcon = "bell"
+                    self.presentation.wrappedValue.dismiss()
+                }
             } else {
                 
             }

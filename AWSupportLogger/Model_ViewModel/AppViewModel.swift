@@ -42,7 +42,7 @@ class AppViewModel: ObservableObject {
     var downloadImageTask: StorageReference?
     
         
-    func fetchAllMessageData(){
+    func fetchAllMessageData(completion: @escaping () -> Void){
         db.collection("Messages").order(by: "stamp", descending: false).addSnapshotListener { querySnapshot, error in
 
             guard let snapshot = querySnapshot else {
@@ -70,7 +70,7 @@ class AppViewModel: ObservableObject {
 
                         self?.allMessagesArray.append(Message(userId: userId, lastMsg: message, time: time, date: date, stamp: stamp.dateValue(), ticketId: ticketId))
                     }
-
+                    completion()
                 }
             }
         }
@@ -107,7 +107,7 @@ class AppViewModel: ObservableObject {
     
     
     func fetchAllTicketData(){
-        ticketListener = self.rootTicketCollection?.order(by: "date", descending: false).addSnapshotListener({ querySnapshot, error in
+        ticketListener = rootTicketCollection?.order(by: "date", descending: false).addSnapshotListener({ querySnapshot, error in
             
             guard let snapshot = querySnapshot else {
                 print("Unable to return All Tickets Data, error: \(error!.localizedDescription)")
@@ -140,7 +140,7 @@ class AppViewModel: ObservableObject {
     
     
     func fetchTicketsData(){
-        ticketListener = self.rootTicketCollection?.whereField("userId", isEqualTo: self.userInfo!.uid).order(by: "date", descending: true).addSnapshotListener({ querySnapshot, error in
+        ticketListener = rootTicketCollection?.whereField("userId", isEqualTo: userInfo!.uid).order(by: "date", descending: true).addSnapshotListener({ querySnapshot, error in
             
             guard let snapshot = querySnapshot else {
                 print("Unable to return Tickets Data, error: \(error!.localizedDescription)")
@@ -205,11 +205,13 @@ class AppViewModel: ObservableObject {
                 self?.fetchUserData{
                      if self?.userInfo?.admin == false{
                         self?.fetchTicketsData()
-                        self?.fetchAllMessageData()
+                         self?.fetchAllMessageData {
+                             self?.updateIcon = "bell.badge"
+                         }
                         self?.downloadImageData()
                     } else {
                         self?.fetchAllTicketData()
-                        self?.fetchAllMessageData()
+                        self?.fetchAllMessageData{}
                         self?.downloadImageData()
                     }
                 }
@@ -221,9 +223,9 @@ class AppViewModel: ObservableObject {
     
     func signIn(email: String, password: String){
         
-        if email != "" && password != ""{
+        if email != "" && password != "" {
             
-            self.isLoading = true
+            isLoading = true
             
             authRef.signIn(withEmail: email, password: password) { [weak self] result, error in
                 guard result != nil, error == nil else {
@@ -235,18 +237,18 @@ class AppViewModel: ObservableObject {
             }
             
         } else {
-            self.error = "Please fill all the contents properly."
-            self.alert.toggle()
+            error = "Please fill all the contents properly."
+            alert.toggle()
         }
         
     }
     
     func signOut(){
-        self.signedOutTapped = true //Fixes issue with fetching object and re-triggering fetch request after SignOut.
+        signedOutTapped = true //Fixes issue with fetching object and re-triggering fetch request after SignOut.
         
         do {
             try authRef.signOut()
-            self.isLoading = false
+            isLoading = false
         } catch {
             print(error)
         }
@@ -258,7 +260,7 @@ class AppViewModel: ObservableObject {
             
             if password == repassword {
                 
-                self.isLoading = true
+                isLoading = true
                 
                 let randomID = UUID.init().uuidString
                 
@@ -324,13 +326,13 @@ class AppViewModel: ObservableObject {
                 }
                 
             } else {
-                self.error = "Password Mismatch"
-                self.alert.toggle()
+                error = "Password Mismatch"
+                alert.toggle()
             }
             
         } else {
-            self.error = "Please fill all the contents properly."
-            self.alert.toggle()
+            error = "Please fill all the contents properly."
+            alert.toggle()
         }
         
         
@@ -354,21 +356,45 @@ class AppViewModel: ObservableObject {
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm E, d MMM y"
         
-        self.rootTicketCollection?.addDocument(data: [
+        rootTicketCollection?.addDocument(data: [
             "date" : "\(formatter.string(from: today))",
             "inquiry" : inquiry,
             "priority" : "\(priority)",
             "status": "\(status)",
             "type": "\(type)",
-            "userId": "\(self.userInfo!.uid)",
-            "company": "\(self.userInfo!.company)",
-            "name": "\(self.userInfo!.name)"
+            "userId": "\(userInfo!.uid)",
+            "company": "\(userInfo!.company)",
+            "name": "\(userInfo!.name)"
         ], completion: { error in
             if error != nil {
                 print(error!.localizedDescription)
             }
         })
     }
+    
+    
+    func deleteTicket(at offsets: IndexSet){
+        for offset in offsets {
+            let selectedTicket = userTicketsArray[offset].key!
+            
+            DispatchQueue.main.async { [weak self] in
+                //Deletes all Ticket Messages when deleting Ticket...
+                
+                self?.rootMessageCollection!.whereField("ticketId", isEqualTo: selectedTicket.documentID).addSnapshotListener { (querySnapshot, err) in
+
+                    guard let snapshot = querySnapshot else {return}
+
+                    for message in snapshot.documents{
+                        self?.rootMessageCollection!.document(message.documentID).delete()
+                    }
+                }
+                                
+                self?.rootTicketCollection!.document(selectedTicket.documentID).delete()
+                self?.userTicketsArray.remove(at: offset)
+            }
+        }
+    }
+    
     
     func sendMsg(message: String, stamp: Timestamp, ticketId: String, userId: String){
                 

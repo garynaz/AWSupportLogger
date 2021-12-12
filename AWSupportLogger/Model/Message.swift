@@ -17,6 +17,7 @@ struct Message: Identifiable {
     var stamp: Date
     var ticketId: String
     
+    
     init(userId: String, lastMsg: String, time: String, date: String, stamp: Date, ticketId: String) {
         self.userId = userId
         self.lastMsg = lastMsg

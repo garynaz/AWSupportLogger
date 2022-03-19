@@ -24,6 +24,11 @@ class AppViewModel: ObservableObject {
     @Published var error = ""
     @Published var isLoading = false
     @Published var updateIcon = "bell"
+    @Published var emptyUpdateView = true
+    
+    @Published var dest: AnyView? = nil
+    @Published var isActive: Bool = false
+
     
     var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
     var handle: AuthStateDidChangeListenerHandle?
@@ -205,9 +210,10 @@ class AppViewModel: ObservableObject {
                 self?.fetchUserData{
                      if self?.userInfo?.admin == false{
                         self?.fetchTicketsData()
-                         self?.fetchAllMessageData {
-                             self?.updateIcon = "bell.badge"
-                         }
+                        self?.fetchAllMessageData{
+                            self?.emptyUpdateView = false
+                            self?.updateIcon = "bell.badge"
+                        }
                         self?.downloadImageData()
                     } else {
                         self?.fetchAllTicketData()
@@ -424,6 +430,12 @@ class AppViewModel: ObservableObject {
                 completion()
             }
         }
+    }
+    
+    
+    func move(to: AnyView) {
+        self.dest = to
+        self.isActive = true
     }
     
 }

@@ -431,6 +431,47 @@ class AppViewModel: ObservableObject {
             }
         }
     }
+	
+	func deleteAllUserTicketData(){
+			
+		self.rootMessageCollection?.whereField("userId", isEqualTo: userInfo!.uid).addSnapshotListener { (querySnapshot, err) in
+				guard let snapshot = querySnapshot else {return}
+				for message in snapshot.documents{
+					self.rootMessageCollection!.document(message.documentID).delete()
+				}
+			}
+		
+		self.rootTicketCollection?.whereField("userId", isEqualTo: userInfo!.uid).addSnapshotListener { (querySnapshot, err) in
+				guard let snapshot = querySnapshot else {return}
+				for ticket in snapshot.documents{
+					self.rootTicketCollection!.document(ticket.documentID).delete()
+				}
+			}
+			
+		self.allMessagesArray.removeAll()
+		self.userTicketsArray.removeAll()
+	}
+	
+	//This method will only delete the user from the Firestore, but will not delete the User Auth credentials.
+	func deleteUserFromFirestore(completion: @escaping () -> Void){
+		self.rootInfoCollection?.whereField("uid", isEqualTo: userInfo!.uid).addSnapshotListener { (querySnapshot, err) in
+			guard let snapshot = querySnapshot else {return}
+			for user in snapshot.documents{
+				self.rootInfoCollection!.document(user.documentID).delete()
+			}
+			completion()
+		}
+	}
+	
+	func deleteUserAccount(){
+		
+		deleteAllUserTicketData()
+		self.downloadImageTask?.delete()
+		
+		deleteUserFromFirestore {
+			Auth.auth().currentUser?.delete()
+		}
+	}
     
     
     func move(to: AnyView) {

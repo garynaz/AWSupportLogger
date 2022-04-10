@@ -16,7 +16,6 @@ struct SignUpView: View {
     
     @State private var selectedImageURL: URL?
     
-    
     @State private var name: String = ""
     @State private var company: String = ""
     @State private var email: String = ""
@@ -51,19 +50,17 @@ struct SignUpView: View {
             ZStack{
                 VStack{
                     
-                    Spacer()
-                    
                     ZStack{
                         if photo != nil {
                             photo?
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: 150, height: 150)
+                                .frame(width: 200, height: 200)
                                 .clipShape(Circle())
                         } else {
                             Circle()
                                 .fill(Color.secondary)
-                                .frame(width: 150, height: 150)
+                                .frame(width: 200, height: 200)
                             Text("Select a Photo")
                                 .foregroundColor(.white)
                                 .font(.headline)
@@ -72,8 +69,9 @@ struct SignUpView: View {
                     .onTapGesture {
                         self.showingImagePicker = true
                     }
-                    .offset(y: -20)
-                    
+
+					Spacer()
+					
                     Group {
                         TextField("Company", text: $company)
                             .padding()
@@ -137,24 +135,6 @@ struct SignUpView: View {
                     
                     Spacer()
                     
-                    HStack{
-                        HStack{
-                            Text("ADMIN")
-                                .foregroundColor(admin ? Color.themeAccent : Color(UIColor.systemGray2))
-                            Toggle("", isOn: $admin)
-                                .labelsHidden()
-                        }
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(lineWidth: 1)
-                                .foregroundColor(admin ? Color.themeAccent : Color(UIColor.systemGray2))
-                        )
-                        
-                    }
-                    
-                    Spacer()
-                    
                     Button(action: {
                         
                         viewModel.signUp(email: email, password: password, repassword: repassword, company: company, name: name, admin: admin, imageURL: self.selectedImageURL)
@@ -172,7 +152,7 @@ struct SignUpView: View {
                     ImagePicker(image: self.$inputImage, selectedImageURL: self.$selectedImageURL)
                 }
                 if viewModel.alert{
-                    ErrorView(alert: viewModel.alert, error: viewModel.error)
+                    ErrorView(error: viewModel.error)
                 }
             }
             .blur(radius: viewModel.isLoading ? 5 : 0)

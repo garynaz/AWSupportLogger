@@ -10,7 +10,8 @@
 		406E2F91BD67CED2B96C09E6 /* Pods_AWSupportLogger.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53A341AB8E3023F12DBF3591 /* Pods_AWSupportLogger.framework */; };
 		DD128E7E26CC18080064B47B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD128E7D26CC18080064B47B /* ContentView.swift */; };
 		DD128E8026CC2AAB0064B47B /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD128E7F26CC2AAB0064B47B /* SignUpView.swift */; };
-		DD27ACD32762E4CA000F44B6 /* UpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD27ACD22762E4CA000F44B6 /* UpdateView.swift */; };
+		DD23403A28036D4600B280F8 /* ForgotPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD23403928036D4600B280F8 /* ForgotPasswordView.swift */; };
+		DD23403C280378DC00B280F8 /* PasswordRecoveryAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD23403B280378DC00B280F8 /* PasswordRecoveryAlertView.swift */; };
 		DD3918472725C9A70000F6B0 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD3918462725C9A70000F6B0 /* ErrorView.swift */; };
 		DD75528426D7153E00735158 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528326D7153E00735158 /* User.swift */; };
 		DD75528626D7154700735158 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD75528526D7154700735158 /* Ticket.swift */; };
@@ -49,7 +50,8 @@
 		ACBEEC30EEE807FD19EF87D5 /* Pods-AWSupportLogger.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AWSupportLogger.debug.xcconfig"; path = "Target Support Files/Pods-AWSupportLogger/Pods-AWSupportLogger.debug.xcconfig"; sourceTree = "<group>"; };
 		DD128E7D26CC18080064B47B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DD128E7F26CC2AAB0064B47B /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
-		DD27ACD22762E4CA000F44B6 /* UpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateView.swift; sourceTree = "<group>"; };
+		DD23403928036D4600B280F8 /* ForgotPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPasswordView.swift; sourceTree = "<group>"; };
+		DD23403B280378DC00B280F8 /* PasswordRecoveryAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordRecoveryAlertView.swift; sourceTree = "<group>"; };
 		DD3918462725C9A70000F6B0 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 		DD75528326D7153E00735158 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DD75528526D7154700735158 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticket.swift; sourceTree = "<group>"; };
@@ -124,12 +126,13 @@
 			isa = PBXGroup;
 			children = (
 				DD3918462725C9A70000F6B0 /* ErrorView.swift */,
+				DD23403B280378DC00B280F8 /* PasswordRecoveryAlertView.swift */,
 				DD128E7D26CC18080064B47B /* ContentView.swift */,
 				DD84CE3126B61FA800E9776F /* SignInView.swift */,
+				DD23403928036D4600B280F8 /* ForgotPasswordView.swift */,
 				DD128E7F26CC2AAB0064B47B /* SignUpView.swift */,
 				DDC88E2126F7BE1D0005B827 /* AdminView.swift */,
 				DD75528C26DA9CB000735158 /* MainView.swift */,
-				DD27ACD22762E4CA000F44B6 /* UpdateView.swift */,
 				DDC88E1926EEC83A0005B827 /* SupportView.swift */,
 				DDC88E1D26EEC8C90005B827 /* QuoteView.swift */,
 				DDC88E1B26EEC8A00005B827 /* TicketView.swift */,
@@ -361,9 +364,10 @@
 				DD3918472725C9A70000F6B0 /* ErrorView.swift in Sources */,
 				DD75528426D7153E00735158 /* User.swift in Sources */,
 				DD8FE30126B2347100916A80 /* AWSupportLoggerApp.swift in Sources */,
-				DD27ACD32762E4CA000F44B6 /* UpdateView.swift in Sources */,
+				DD23403C280378DC00B280F8 /* PasswordRecoveryAlertView.swift in Sources */,
 				DD128E7E26CC18080064B47B /* ContentView.swift in Sources */,
 				DD75528626D7154700735158 /* Ticket.swift in Sources */,
+				DD23403A28036D4600B280F8 /* ForgotPasswordView.swift in Sources */,
 				DD128E8026CC2AAB0064B47B /* SignUpView.swift in Sources */,
 				DD84CE3626C565CE00E9776F /* ImagePicker.swift in Sources */,
 				DD84CE2F26B613E800E9776F /* AppViewModel.swift in Sources */,

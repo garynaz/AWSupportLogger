@@ -58,27 +58,27 @@ struct SignInView: View {
                         
                     
                     HStack(spacing: 15){
-                        VStack{
-                            if self.visiblePass {
-                                TextField("Password", text: $password)
-                                    .disableAutocorrection(true)
-                                    .autocapitalization(.none)
-                                    .onChange(of: self.password, perform: { value in
-                                        if value.count > 10 {
-                                            self.password = String(value.prefix(10)) //Max 10 Characters for Password.
-                                        }
-                                    })
-                            } else {
-                                SecureField("Password", text: $password)
-                                    .disableAutocorrection(true)
-                                    .autocapitalization(.none)
-                                    .onChange(of: self.password, perform: { value in
-                                        if value.count > 10 {
-                                            self.password = String(value.prefix(10)) //Max 10 Characters for Password.
-                                        }
-                                    })
-                            }
-                        }
+						VStack{
+							if self.visiblePass {
+								TextField("Password", text: $password)
+									.disableAutocorrection(true)
+									.autocapitalization(.none)
+									.onChange(of: self.password, perform: { value in
+										if value.count > 10 {
+											self.password = String(value.prefix(10)) //Max 10 Characters for Password.
+										}
+									})
+							} else {
+								SecureField("Password", text: $password)
+									.disableAutocorrection(true)
+									.autocapitalization(.none)
+									.onChange(of: self.password, perform: { value in
+										if value.count > 10 {
+											self.password = String(value.prefix(10)) //Max 10 Characters for Password.
+										}
+									})
+							}
+						}
                         
                         Button {
                             self.visiblePass.toggle()
@@ -89,7 +89,8 @@ struct SignInView: View {
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 4).stroke(Color(UIColor.systemGray2), lineWidth: 1))
                     
-                    
+					NavigationLink("Forget Password?", destination: ForgotPasswordView())
+
                     //SignIn Button
                     Button(action: {
                         viewModel.signIn(email: username, password: password)
@@ -115,7 +116,7 @@ struct SignInView: View {
                 .navigationTitle("AW Support")
                 
                 if viewModel.alert{
-                    ErrorView(alert: viewModel.alert, error: viewModel.error)
+                    ErrorView(error: viewModel.error)
                 }
             }
             .blur(radius: viewModel.isLoading ? 5 : 0)

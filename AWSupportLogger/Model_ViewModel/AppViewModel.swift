@@ -21,10 +21,9 @@ class AppViewModel: ObservableObject {
     @Published var allMessagesArray: [Message] = [Message]()
     @Published var signedIn: Bool = false
     @Published var alert = false
+	@Published var recoveryAlert = false
     @Published var error = ""
     @Published var isLoading = false
-    @Published var updateIcon = "bell"
-    @Published var emptyUpdateView = true
     
     @Published var dest: AnyView? = nil
     @Published var isActive: Bool = false
@@ -47,7 +46,7 @@ class AppViewModel: ObservableObject {
     var downloadImageTask: StorageReference?
     
         
-    func fetchAllMessageData(completion: @escaping () -> Void){
+    func fetchAllMessageData(){
         db.collection("Messages").order(by: "stamp", descending: false).addSnapshotListener { querySnapshot, error in
 
             guard let snapshot = querySnapshot else {
@@ -75,7 +74,6 @@ class AppViewModel: ObservableObject {
 
                         self?.allMessagesArray.append(Message(userId: userId, lastMsg: message, time: time, date: date, stamp: stamp.dateValue(), ticketId: ticketId))
                     }
-                    completion()
                 }
             }
         }
@@ -210,14 +208,11 @@ class AppViewModel: ObservableObject {
                 self?.fetchUserData{
                      if self?.userInfo?.admin == false{
                         self?.fetchTicketsData()
-                        self?.fetchAllMessageData{
-                            self?.emptyUpdateView = false
-                            self?.updateIcon = "bell.badge"
-                        }
+                        self?.fetchAllMessageData()
                         self?.downloadImageData()
                     } else {
                         self?.fetchAllTicketData()
-                        self?.fetchAllMessageData{}
+                        self?.fetchAllMessageData()
                         self?.downloadImageData()
                     }
                 }
@@ -259,6 +254,18 @@ class AppViewModel: ObservableObject {
             print(error)
         }
     }
+	
+	func sendPasswordRecoveryInstruction(email: String){
+		Auth.auth().sendPasswordReset(withEmail: email) { error in
+			if let error = error {
+				self.error = error.localizedDescription
+				self.alert.toggle()
+				return
+			} else {
+				self.recoveryAlert.toggle()
+			}
+		}
+	}
     
     func signUp(email: String, password: String, repassword: String, company: String, name: String, admin: Bool, imageURL: URL?){
                 

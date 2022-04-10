@@ -12,7 +12,6 @@ struct ErrorView: View{
     @EnvironmentObject var viewModel: AppViewModel
     
     @State var color = Color.black.opacity(0.7)
-    var alert: Bool?
     var error: String?
     
     var body : some View{

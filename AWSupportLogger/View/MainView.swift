@@ -11,7 +11,6 @@ import Firebase
 
 struct MainView: View {
 	@EnvironmentObject private var appViewModel: AppViewModel
-	@State var showUpdate = false
 	
 	var body: some View {
 		
@@ -49,14 +48,6 @@ struct MainView: View {
 				Button("Delete All Ticket Data", action: appViewModel.deleteAllUserTicketData)
 				Button("Delete Account", action: appViewModel.deleteUserAccount)
 		},trailing: HStack{
-			Image(systemName: appViewModel.updateIcon)
-				.font(.system(size: 30))
-				.onTapGesture {
-					showUpdate = true
-				}
-				.sheet(isPresented: $showUpdate) {
-					UpdateView()
-				}
 			Image(uiImage: appViewModel.photoImage!)
 				.resizable()
 				.scaledToFit()

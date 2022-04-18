@@ -29,9 +29,8 @@ class AppViewModel: ObservableObject {
     @Published var isActive: Bool = false
 
     
-    var signedOutTapped = false //Fixes issue with fetching object and re-triggering fetch request after SignOut.
-    var handle: AuthStateDidChangeListenerHandle?
     var ticketListener: ListenerRegistration?
+	var allMessageDataListener: ListenerRegistration?
     
     let authRef = Auth.auth()
     
@@ -46,8 +45,8 @@ class AppViewModel: ObservableObject {
     var downloadImageTask: StorageReference?
     
         
-    func fetchAllMessageData(){
-        db.collection("Messages").order(by: "stamp", descending: false).addSnapshotListener { querySnapshot, error in
+    func fetchAllMessageData() {
+       allMessageDataListener = db.collection("Messages").order(by: "stamp", descending: false).addSnapshotListener { querySnapshot, error in
 
             guard let snapshot = querySnapshot else {
                 print("Unable to return all Messages Data, error: \(error!.localizedDescription)")
@@ -58,7 +57,7 @@ class AppViewModel: ObservableObject {
 
                 if (diff.type == .added) {
                     self?.allMessagesArray.removeAll()
-                    for message in querySnapshot!.documents{
+                    for message in querySnapshot!.documents {
                         let msgData = message.data()
                         let message = msgData["message"] as! String
                         let stamp = msgData["stamp"] as! Timestamp
@@ -80,7 +79,7 @@ class AppViewModel: ObservableObject {
     }
     
     
-    func fetchUserData(completion: @escaping () -> Void){
+    func fetchUserData(completion: @escaping () -> Void) {
         db.collection("Users").document("\(userIdRef)").getDocument { [weak self] document, error in
             // Check for error
             if let error = error{
@@ -121,7 +120,7 @@ class AppViewModel: ObservableObject {
                 if (diff.type == .added) {
                     self?.allTicketsArray.removeAll()
                     
-                    for ticket in querySnapshot!.documents{
+                    for ticket in querySnapshot!.documents {
                         let ticketData = ticket.data()
                         let date = ticketData["date"] as! String
                         let status = ticketData["status"] as! String
@@ -154,7 +153,7 @@ class AppViewModel: ObservableObject {
                 if (diff.type == .added) {
                     self?.userTicketsArray.removeAll()
                     
-                    for ticket in querySnapshot!.documents{
+                    for ticket in querySnapshot!.documents {
                         let ticketData = ticket.data()
                         let date = ticketData["date"] as! String
                         let status = ticketData["status"] as! String
@@ -174,39 +173,33 @@ class AppViewModel: ObservableObject {
         })
     }
     
-    func downloadImageData(){
-        downloadImageTask?.getData(maxSize: 6 * 1024 * 1024, completion: { [weak self] data, error in
-            if let error = error {
-                print("Got an error Download Image data: \(error.localizedDescription)")
-                return
-            } else {
-                self?.photoImage = UIImage(data: data!)
-                DispatchQueue.main.async {
-                    withAnimation {
-                        
-                        //Fixes issue with fetching object and re-triggering fetch request after SignOut.
-                        guard self?.signedOutTapped != true else {
-                            self?.signedOutTapped = false
-                            return
-                        }
-                        
-                        self?.signedIn = true
-                    }
-                }
-            }
-        })
-    }
+	func downloadImageData() {
+		downloadImageTask?.getData(maxSize: 6 * 1024 * 1024, completion: { [weak self] data, error in
+			if let error = error {
+				print("Got an error Download Image data: \(error.localizedDescription)")
+				return
+			} else {
+				
+				self?.photoImage = UIImage(data: data!)
+				DispatchQueue.main.async {
+					withAnimation {
+						self?.signedIn = true
+					}
+				}
+			}
+		})
+	}
     
-    func listen(){
+    func listen() {
         print("Listener is triggered")
-        handle = authRef.addStateDidChangeListener( { [weak self] auth, user in
+        authRef.addStateDidChangeListener( { [weak self] auth, user in
             if let user = auth.currentUser {
                 self?.userIdRef = user.uid
                 self?.rootInfoCollection = Firestore.firestore().collection("/Users/")
                 self?.rootTicketCollection = Firestore.firestore().collection("/Ticket/")
                 self?.rootMessageCollection = Firestore.firestore().collection("/Messages/")
-                self?.fetchUserData{
-                     if self?.userInfo?.admin == false{
+                self?.fetchUserData {
+                     if self?.userInfo?.admin == false {
                         self?.fetchTicketsData()
                         self?.fetchAllMessageData()
                         self?.downloadImageData()
@@ -222,40 +215,31 @@ class AppViewModel: ObservableObject {
         })
     }
     
-    func signIn(email: String, password: String){
-        
-        if email != "" && password != "" {
-            
-            isLoading = true
-            
-            authRef.signIn(withEmail: email, password: password) { [weak self] result, error in
-                guard result != nil, error == nil else {
-                    self?.isLoading = false
-                    self?.error = error!.localizedDescription
-                    self?.alert.toggle()
-                    return
-                }
-            }
-            
-        } else {
-            error = "Please fill all the contents properly."
-            alert.toggle()
-        }
-        
-    }
+	func signIn(email: String, password: String) {
+		
+		isLoading = true
+		
+		authRef.signIn(withEmail: email, password: password) { [weak self] result, error in
+			guard result != nil, error == nil else {
+				self?.isLoading = false
+				self?.error = error!.localizedDescription
+				self?.alert.toggle()
+				return
+			}
+		}
+	}
     
-    func signOut(){
-        signedOutTapped = true //Fixes issue with fetching object and re-triggering fetch request after SignOut.
-        
-        do {
+    func signOut() {
+		do {
             try authRef.signOut()
+			signedIn = false
             isLoading = false
         } catch {
             print(error)
         }
     }
 	
-	func sendPasswordRecoveryInstruction(email: String){
+	func sendPasswordRecoveryInstruction(email: String) {
 		Auth.auth().sendPasswordReset(withEmail: email) { error in
 			if let error = error {
 				self.error = error.localizedDescription
@@ -267,9 +251,9 @@ class AppViewModel: ObservableObject {
 		}
 	}
     
-    func signUp(email: String, password: String, repassword: String, company: String, name: String, admin: Bool, imageURL: URL?){
+    func signUp(email: String, password: String, repassword: String, company: String, name: String, admin: Bool, imageURL: URL?) {
                 
-        if email != "" && password != "" && repassword != "" && name != "" && company != ""{
+        if email != "" && password != "" && repassword != "" && name != "" && company != "" {
             
             if password == repassword {
                 
@@ -357,14 +341,14 @@ class AppViewModel: ObservableObject {
         if let ticketListener = ticketListener {
             ticketListener.remove()
         }
-        
-        if let handle = handle {
-            authRef.removeStateDidChangeListener(handle)
-        }
+		
+		if let allMessageDataListener = allMessageDataListener {
+			allMessageDataListener.remove()
+		}
     }
     
     
-    func addTicket(inquiry: String, priority: String, status: String, type: String){
+    func addTicket(inquiry: String, priority: String, status: String, type: String) {
         let today = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm E, d MMM y"
@@ -395,9 +379,9 @@ class AppViewModel: ObservableObject {
                 
                 self?.rootMessageCollection!.whereField("ticketId", isEqualTo: selectedTicket.documentID).addSnapshotListener { (querySnapshot, err) in
 
-                    guard let snapshot = querySnapshot else {return}
+                    guard let snapshot = querySnapshot else { return }
 
-                    for message in snapshot.documents{
+                    for message in snapshot.documents {
                         self?.rootMessageCollection!.document(message.documentID).delete()
                     }
                 }
@@ -409,7 +393,7 @@ class AppViewModel: ObservableObject {
     }
     
     
-    func sendMsg(message: String, stamp: Timestamp, ticketId: String, userId: String){
+    func sendMsg(message: String, stamp: Timestamp, ticketId: String, userId: String) {
                 
         db.collection("Messages").addDocument(data: [
             "message" : message,
@@ -424,7 +408,7 @@ class AppViewModel: ObservableObject {
         
     }
     
-    func updateTicketStatus(status: String, reference: DocumentReference, completion: @escaping () -> Void){
+    func updateTicketStatus(status: String, reference: DocumentReference, completion: @escaping () -> Void) {
         let ticketRef = rootTicketCollection?.document(reference.documentID)
         
         ticketRef!.updateData([
@@ -439,18 +423,17 @@ class AppViewModel: ObservableObject {
         }
     }
 	
-	func deleteAllUserTicketData(){
-			
+	func deleteAllUserTicketData() {
 		self.rootMessageCollection?.whereField("userId", isEqualTo: userInfo!.uid).addSnapshotListener { (querySnapshot, err) in
-				guard let snapshot = querySnapshot else {return}
+				guard let snapshot = querySnapshot else { return }
 				for message in snapshot.documents{
 					self.rootMessageCollection!.document(message.documentID).delete()
 				}
 			}
 		
 		self.rootTicketCollection?.whereField("userId", isEqualTo: userInfo!.uid).addSnapshotListener { (querySnapshot, err) in
-				guard let snapshot = querySnapshot else {return}
-				for ticket in snapshot.documents{
+				guard let snapshot = querySnapshot else { return }
+				for ticket in snapshot.documents {
 					self.rootTicketCollection!.document(ticket.documentID).delete()
 				}
 			}
@@ -460,30 +443,25 @@ class AppViewModel: ObservableObject {
 	}
 	
 	//This method will only delete the user from the Firestore, but will not delete the User Auth credentials.
-	func deleteUserFromFirestore(completion: @escaping () -> Void){
+	func deleteUserFromFirestore(completion: @escaping () -> Void) {
 		self.rootInfoCollection?.whereField("uid", isEqualTo: userInfo!.uid).addSnapshotListener { (querySnapshot, err) in
-			guard let snapshot = querySnapshot else {return}
-			for user in snapshot.documents{
+			guard let snapshot = querySnapshot else { return }
+			for user in snapshot.documents {
 				self.rootInfoCollection!.document(user.documentID).delete()
 			}
 			completion()
 		}
 	}
 	
-	func deleteUserAccount(){
+	func deleteUserAccount() {
 		
 		deleteAllUserTicketData()
 		self.downloadImageTask?.delete()
 		
-		deleteUserFromFirestore {
+		deleteUserFromFirestore { [weak self] in
 			Auth.auth().currentUser?.delete()
+			self?.signedIn = false
 		}
 	}
-    
-    
-    func move(to: AnyView) {
-        self.dest = to
-        self.isActive = true
-    }
     
 }

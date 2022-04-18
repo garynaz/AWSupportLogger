@@ -55,12 +55,12 @@ struct SignUpView: View {
                             photo?
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: 200, height: 200)
+                                .frame(width: 150, height: 150)
                                 .clipShape(Circle())
                         } else {
                             Circle()
                                 .fill(Color.secondary)
-                                .frame(width: 200, height: 200)
+                                .frame(width: 150, height: 150)
                             Text("Select a Photo")
                                 .foregroundColor(.white)
                                 .font(.headline)
@@ -80,8 +80,8 @@ struct SignUpView: View {
                             .autocapitalization(.none)
                             .padding(.bottom)
                             .onChange(of: self.company, perform: { value in
-                                if value.count > 30 {
-                                    self.company = String(value.prefix(30))
+                                if value.count > 14 {
+                                    self.company = String(value.prefix(14))
                                 }
                             })
                         
@@ -92,8 +92,8 @@ struct SignUpView: View {
                             .autocapitalization(.none)
                             .padding(.bottom)
                             .onChange(of: self.name, perform: { value in
-                                if value.count > 30 {
-                                    self.name = String(value.prefix(30))
+                                if value.count > 19 {
+                                    self.name = String(value.prefix(19))
                                 }
                             })
                         

@@ -90,8 +90,8 @@ struct AdminView: View {
             .listRowBackground(Color.themeBackground)
         }
         .navigationBarBackButtonHidden(true)
-        .navigationTitle("ADMIN")
-        .toolbar{
+        .navigationTitle("\(appViewModel.userInfo!.name)")
+        .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button {
                     appViewModel.allMessagesArray.removeAll()
@@ -101,20 +101,16 @@ struct AdminView: View {
                     Text("Sign Out")
                 }
             }
-            
-            ToolbarItem(placement: .navigationBarTrailing) {
-                HStack{
-                    Image(uiImage: appViewModel.photoImage!)
-                        .resizable()
-                        .scaledToFit()
-                        .clipShape(Circle())
-                        .frame(width: 50, height: 50)
-                    Text(appViewModel.userInfo!.name)
-                        .font(.system(size: 20))
-                    EditButton()
-                        .animation(.default)
-                }
-            }
+			ToolbarItem(placement: .navigationBarTrailing) {
+				HStack{
+					Image(uiImage: appViewModel.photoImage!)
+						.resizable()
+						.scaledToFit()
+						.clipShape(Circle())
+						.frame(width: 50, height: 50)
+					EditButton()
+				}
+			}
         }
     }
     

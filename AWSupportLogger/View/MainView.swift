@@ -14,39 +14,36 @@ struct MainView: View {
 	
 	var body: some View {
 		
-		VStack{
-			Spacer()
-			VStack(spacing: 40){
-				
-				NavigationLink(destination: SupportView()){
-					awButton(content: "Request Support", backColor: Color.themeSecondary)
-				}
-				
-				NavigationLink(destination: QuoteView()){
-					awButton(content: "Request Quote", backColor: Color.orange)
-				}
-				
-				NavigationLink(destination: TicketView()){
-					awButton(content: "Ticket Status", backColor: Color.green)
-				}
-			}
-			Spacer()
+		VStack(spacing: 30){
 			
+			NavigationLink(destination: SupportView()){
+				awButton(content: "Request Support", backColor: Color.themeSecondary)
+			}
+			
+			NavigationLink(destination: QuoteView()){
+				awButton(content: "Request Quote", backColor: Color.orange)
+			}
+			
+			NavigationLink(destination: TicketView()){
+				awButton(content: "Ticket Status", backColor: Color.green)
+			}
 		}
+		.padding(.leading)
+		.padding(.trailing)
 		.onAppear(perform: {
 			appViewModel.isLoading = false
 		})
 		.navigationBarBackButtonHidden(true)
 		.navigationBarTitle(appViewModel.userInfo!.company, displayMode: .large)
 		.navigationBarItems(leading:
-			Menu("Account"){
-				Button("Sign Out") {
-					appViewModel.allMessagesArray.removeAll()
-					appViewModel.userTicketsArray.removeAll()
-					appViewModel.signOut()
-				}
-				Button("Delete All Ticket Data", action: appViewModel.deleteAllUserTicketData)
-				Button("Delete Account", action: appViewModel.deleteUserAccount)
+								Menu("Account"){
+			Button("Sign Out") {
+				appViewModel.allMessagesArray.removeAll()
+				appViewModel.userTicketsArray.removeAll()
+				appViewModel.signOut()
+			}
+			Button("Delete All Ticket Data", action: appViewModel.deleteAllUserTicketData)
+			Button("Delete Account", action: appViewModel.deleteUserAccount)
 		},trailing: HStack{
 			Image(uiImage: appViewModel.photoImage!)
 				.resizable()
@@ -77,26 +74,29 @@ struct awButton: View {
 	var content : String
 	var backColor : Color
 	var body: some View {
-		VStack {
-			HStack {
-				Image(uiImage: #imageLiteral(resourceName: "awText"))
-					.resizable()
-					.frame(width: 30, height: 20)
-					.padding(.leading)
+		ZStack{
+			VStack {
+				HStack {
+					Image(uiImage: #imageLiteral(resourceName: "awText"))
+						.resizable()
+						.frame(width: 30, height: 20)
+						.padding(.leading)
+					Spacer()
+				}
+				.padding(.top)
 				Spacer()
 			}
-			.padding(.top)
-			ZStack {
-				Text("\(content)")
-					.font(.largeTitle)
-					.fontWeight(.semibold)
-					.offset(y: 30.0)
-			}
-			Spacer()
+			.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+			.background(backColor)
+			.clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+			
+			Text("\(content)")
+				.font(.largeTitle)
+				.fontWeight(.semibold)
+				.foregroundColor(Color.white)
+
 		}
-		.foregroundColor(Color.white)
-		.frame(width: 350, height: 200, alignment: .center)
-		.background(backColor)
-		.clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+	
+		
 	}
 }

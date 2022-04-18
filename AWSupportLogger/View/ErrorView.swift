@@ -20,14 +20,14 @@ struct ErrorView: View{
                 Text("Error")
                     .font(.title)
                     .fontWeight(.bold)
-                    .foregroundColor(self.color)
+                    .foregroundColor(Color.themeForeground)
                 
                 Spacer()
             }
             .padding(.horizontal, 25)
             
             Text(self.error!)
-                .foregroundColor(self.color)
+				.foregroundColor(Color.themeForeground)
                 .padding(.top)
                 .padding(.horizontal, 25)
             
@@ -35,11 +35,11 @@ struct ErrorView: View{
                 viewModel.alert.toggle()
             } label: {
                 Text("Cancel")
-                    .foregroundColor(color)
+                    .foregroundColor(Color.themeForeground)
                     .padding(.vertical)
                     .frame(width: UIScreen.main.bounds.width - 120)
             }
-            .background(Color.white)
+            .background(Color.themeBackground)
             .cornerRadius(10)
             .padding(.top, 25)
             

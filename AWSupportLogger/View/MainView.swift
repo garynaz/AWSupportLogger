@@ -27,12 +27,10 @@ struct MainView: View {
 			NavigationLink(destination: TicketView()){
 				awButton(content: "Ticket Status", backColor: Color.green)
 			}
+			.padding(.bottom)
 		}
 		.padding(.leading)
 		.padding(.trailing)
-		.onAppear(perform: {
-			appViewModel.isLoading = false
-		})
 		.navigationBarBackButtonHidden(true)
 		.navigationBarTitle(appViewModel.userInfo!.company, displayMode: .large)
 		.navigationBarItems(leading:
@@ -94,9 +92,9 @@ struct awButton: View {
 				.font(.largeTitle)
 				.fontWeight(.semibold)
 				.foregroundColor(Color.white)
-
+			
 		}
-	
+		
 		
 	}
 }

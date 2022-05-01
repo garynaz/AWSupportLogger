@@ -461,7 +461,23 @@ class AppViewModel: ObservableObject {
 		deleteUserFromFirestore { [weak self] in
 			Auth.auth().currentUser?.delete()
 			self?.signedIn = false
+			self?.isLoading = false
 		}
+	}
+	
+	func deleteAdminAccount() {
+
+		self.downloadImageTask?.delete()
+
+		deleteUserFromFirestore { [weak self] in
+			Auth.auth().currentUser?.delete()
+			self?.signedIn = false
+			self?.isLoading = false
+		}
+		
+		self.allMessagesArray.removeAll()
+		self.allTicketsArray.removeAll()
+		self.userTicketsArray.removeAll()
 	}
     
 }

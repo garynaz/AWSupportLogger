@@ -228,17 +228,17 @@ class AppViewModel: ObservableObject {
 			}
 		}
 	}
-    
-    func signOut() {
+
+	func signOut() {
 		do {
-            try authRef.signOut()
+			try authRef.signOut()
 			signedIn = false
-            isLoading = false
-        } catch {
-            print(error)
-        }
-    }
-	
+			isLoading = false
+		} catch {
+			print(error)
+		}
+	}
+
 	func sendPasswordRecoveryInstruction(email: String) {
 		Auth.auth().sendPasswordReset(withEmail: email) { error in
 			if let error = error {
